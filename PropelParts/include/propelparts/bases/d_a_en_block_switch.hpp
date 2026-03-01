@@ -31,7 +31,7 @@ public:
     bool mGiveCoin;
 };
 
-const u32 l_item_values[5] = {
+const u32 l_switchblock_item_values[5] = {
     0xF,				// Empty
     0xC,				// Mushroom
     0,					// Fire

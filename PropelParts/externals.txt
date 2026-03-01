@@ -1,3 +1,6 @@
+item_start_check__15daEnBlockMain_cFi=0x80022770
+l_item_values=0x802ee620
+
 startSound__10daPlBase_cFUlb=0x80057e70
 DWORD_ARRAY_802f5108=0x802f5108
 getPowerChangeSpeedData__10daPlBase_cFR21sPowerChangeSpeedData=0x8004bf80

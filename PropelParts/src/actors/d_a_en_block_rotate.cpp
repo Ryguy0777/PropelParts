@@ -7,6 +7,8 @@
 #include <game/bases/d_eff_actor_manager.hpp>
 #include <game/bases/d_objblock_mng.hpp>
 #include <game/bases/d_s_stage.hpp>
+#include <game/bases/d_tencoin_mng.hpp>
+#include <game/bases/d_actor_manager.hpp>
 
 
 CUSTOM_ACTOR_PROFILE(EN_BLOCK_ROTATE, daEnBlockRotate_c, fProfile::RIVER_BARREL, fProfile::DRAW_ORDER::RIVER_BARREL, 0x2);
@@ -82,8 +84,6 @@ int daEnBlockRotate_c::create() {
 
     mBg.entry();
 
-    mCoinsRemaining = 10;
-
     // Sprite settings
     mContents = mParam & 0xF;
     mIndestructible = mParam >> 4 & 1;
@@ -100,6 +100,8 @@ int daEnBlockRotate_c::create() {
         default:
             changeState(StateID_Wait);
     }
+
+    mOriginalContents = mContents;
 
     return SUCCEEDED;
 }
@@ -156,7 +158,7 @@ void daEnBlockRotate_c::initialize_upmove() {
         }
     }
     // Create coin items/propeller on block hit
-    if (l_early_items[mContents]) {
+    if (item_start_check(mContents) || mContents == 4) {
         createItem();
     }
 }
@@ -170,7 +172,7 @@ void daEnBlockRotate_c::initialize_downmove() {
             mContents = 1;
         } 
     }
-    if (l_early_items[mContents]) {
+    if (item_start_check(mContents) || mContents == 4) {
         createItem();
     }
 }
@@ -211,11 +213,11 @@ void daEnBlockRotate_c::blockWasHit(bool isDown) {
 
     if (mContents != 0) {
         // We've already spawned our coin if we're a 10-coin block, so go back to wait
-        if (mContents == 10 && mCoinsRemaining > 0) {
+        if (mOriginalContents == 10 && mContents == 1) {
             changeState(StateID_Wait);
         } else {
             // Spawn item if we haven't already
-            if (!l_early_items[mContents]) {
+            if (!(item_start_check(mContents) || mContents == 4)) {
                 createItem();
             }
             changeState(StateID_HitWait);
@@ -256,6 +258,8 @@ bool daEnBlockRotate_c::playerOverlaps() {
 
 void daEnBlockRotate_c::createItem() {
     // Spawn block contents
+    mVec3_c coinPos(mPos.x, mPos.y, mPos.z);
+    nw4r::math::VEC2 soundPos = dAudio::cvtSndObjctPos(coinPos);
     switch (mContents) {
         case 9: // Yoshi egg
             if (YoshiEggCreateCheck(0))
@@ -267,8 +271,16 @@ void daEnBlockRotate_c::createItem() {
         case 13: // Spring
             jumpdai_set();
             break;
-        case 10: // 10-coin, don't care for the time mechanic
-            mCoinsRemaining--;
+        case 16: // Successful 10 coin chain
+            if (!mIsGroundPound) {
+                coinPos.y += 16.0f;
+                dActorMng_c::m_instance->createJumpCoin(coinPos, 5, 0);
+                dAudio::g_pSndObjMap->startSound(SE_OBJ_GET_COIN_SHOWER, soundPos, 0);
+            } else {
+                coinPos.y -= 8.0f;
+                dActorMng_c::m_instance->createBlockDownCoin(coinPos, 5, 0);
+            }
+            break;
         default: // Normal items
             dActor_c::construct(fProfile::EN_ITEM, mPlayerID << 16 | (mIsGroundPound * 3) << 18 | l_item_values[mContents] & 0b11111, &mPos, nullptr, mLayer);
             // Play item spawn sound
@@ -288,6 +300,30 @@ void daEnBlockRotate_c::destroyBlock() {
     dEffActorMng_c::m_instance->createBlockFragEff(mPos, 0x903, -1);
 }
 
+bool daEnBlockRotate_c::checkTenCoin() {
+    // Also handles if we should register this block as hit by the block manager,
+    // But the vanilla game does the same thing
+    if (mOriginalContents == 10) {
+        int tencoincheck = dTenCoinMng_c::m_instance->tencoin_check(&mInitialPos, 0, 0);
+        switch (tencoincheck) {
+            case 0: // Chain has started
+            case 1: // Chain is ongoing
+            default:
+                mContents = 1;
+                return false;
+            case 2: // Chain has ended unsuccessfully
+                mContents = 10;
+                return true;
+            case 3: // Chain has ended successfully
+                mContents = 16;
+                return true;
+        }
+    } else if (mContents != 0) {
+        return true;
+    }
+    return false;
+}
+
 void daEnBlockRotate_c::initializeState_Wait() {}
 
 void daEnBlockRotate_c::finalizeState_Wait() {}
@@ -300,18 +336,22 @@ void daEnBlockRotate_c::executeState_Wait() {
         // Hit from below
         mAnotherFlag = 2;
         mIsGroundPound = false;
+        if (checkTenCoin()) {
+            dObjBlockMng_c::m_instance->set_objblock_check(&mInitialPos, dScStage_c::m_instance->mCurrFile, 0, 0);
+        }
         changeState(StateID_UpMove);
     } else if (result == 2) {
         // Hit from above
         mAnotherFlag = 1;
         mIsGroundPound = true;
+        if (checkTenCoin()) {
+            dObjBlockMng_c::m_instance->set_objblock_check(&mInitialPos, dScStage_c::m_instance->mCurrFile, 0, 0);
+        }
         changeState(StateID_DownMove);
     }
 }
 
 void daEnBlockRotate_c::initializeState_HitWait() {
-    dObjBlockMng_c::m_instance->set_objblock_check(&mInitialPos, dScStage_c::m_instance->mCurrFile, 0, 0);
-
     // Setup tile renderer
     dPanelObjMgr_c *list = dBg_c::m_bg_p->getPanelObjMgr(0);
     list->addPanelObjList(&mTile);

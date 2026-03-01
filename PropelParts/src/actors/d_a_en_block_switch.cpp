@@ -136,7 +136,7 @@ void daEnBlockSwitch_c::blockWasHit(bool isDown) {
 
 void daEnBlockSwitch_c::createItem() {
     mVec3_c mItemPos = mVec3_c(mPos.x, mPos.y-8.0f, mPos.z);
-    u32 itemID = l_item_values[mPalaceType];
+    u32 itemID = l_switchblock_item_values[mPalaceType];
     if (mGiveCoin) {
         itemID = 2;
     }
