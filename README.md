@@ -1,5 +1,5 @@
 # Notice
-PropelParts's development will be on hiatus until my mental health improves.
+PropelParts has been canceled.
 
 # PropelParts
 This is a custom code platform for New Super Mario Bros. Wii that adds new features to the game, intended to serve as a basis for mods of the game.
