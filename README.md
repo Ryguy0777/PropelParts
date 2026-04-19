@@ -20,7 +20,7 @@ along with headers from the [NSMBW Decomp](https://github.com/NSMBW-Community/NS
 * Install a recent version of Python 3.
 * Download [Ninja](https://ninja-build.org) and place it in the `/PropelParts/` directory
   * Alternatively, you may add Ninja to PATH
-* Download the CodeWarrior for Embedded PowerPC binaries from [here](https://files.decomp.dev/compilers_20230715.zip) and extract it into the `/PropelParts/cw/` directory. The compiler should be located at `/compilers/Wii/1.3/mwcceppc.exe`.
+* Download the CodeWarrior for Embedded PowerPC binaries from [here](https://files.decomp.dev/compilers_20230715.zip) and extract it. Find the compiler located at<br>`/compilers/Wii/1.3/mwcceppc.exe`, and copy it to the `/PropelParts/cw/` directory.
   * The version of CodeWarrior used by Kamek's examples and NewerSMBW are not supported currently. This will change in the near future. 
 * If you're on a non-Windows system, [Wine](https://www.winehq.org/) is needed to run CodeWarrior.
 #### Building
