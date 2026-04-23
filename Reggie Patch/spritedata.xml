@@ -745,6 +745,10 @@
     </list>
   </sprite>
 
+  <sprite id="530" name="Timer Sprite" notes="Adds 50 seconds to the stage timer when the specified Triggering Event is activated, then deletes itself." advancednotes="Place multiple sprites to add more time. 3 sprites = +150s, 5 sprites = +250s.">
+    <value nybble="1-2" title="Triggering Event ID" idtype="Triggering Event" comment="This sprite will add 50 seconds to the timer when this event is activated."/>
+  </sprite> <!-- #530: Timer Sprite -->
+
   <sprite id="529" name="Switch Palace Switch" notes="A large !-Switch that will activate a Switch Palace and display a message upon being pressed.">
     <list nybble="12.0-12.3" title="Switch Type" comment="This determines the color of switch and what block outlines will be actived.">
       <entry value="0">World 3 Switch</entry>
