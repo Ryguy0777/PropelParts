@@ -4,6 +4,8 @@
 
 class daLiftBgRotation_c : public daLiftBgBase_c {
 public:
+    virtual int create();
+
     virtual bool initMovement();
     virtual void executeMovement();
 

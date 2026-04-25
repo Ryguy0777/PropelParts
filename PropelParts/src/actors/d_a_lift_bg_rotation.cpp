@@ -45,6 +45,15 @@ void daLiftBgRotation_c::executeMovement() {
     }
 };
 
+int daLiftBgRotation_c::create() {
+    int result = daLiftBgBase_c::create();
+    if (result == 1) {
+        float diagonal = sqrtf(mWidth * mWidth + mHeight * mHeight) * 16.0f;
+        mVisibleAreaSize.set(diagonal, diagonal);
+    }
+    return result;
+}
+
 fBase_c *daLiftBgRotation_c::findController() {
     fBase_c *controller = nullptr;
     do {
