@@ -758,4 +758,11 @@
     <checkbox nybble="5.2" title="Loads at Midway" comment="When enabled, the switch will only appear if the level has been loaded from a Midway point."/>
     <value nybble="1-2" title="Triggering Event ID" comment="This switch will not be visible if a Triggering Event is defined unless that event is activated." idtype="Triggering Event"/>
   </sprite> <!-- #529: Switch Palace Switch -->
+  
+  <sprite id="531" name="Event Looper" notes="A sprite that loops through a sequence of events. When the Triggering Event is activated, the Looper starts at the Start Event and progresses through events until it reaches the Target Event End. After completing the sequence, if the Triggering Event is still active, it loops back to the Start Event." advancednotes="The looper activates each event in sequence (Start to End), waiting for each event to be enabled then disabled before moving to the next. After reaching the end, it waits for the Delay period before looping back if the Triggering Event is still active.">
+    <value nybble="1-2" title="Triggering Event ID" idtype="Triggering Event" comment="When this event is activated, the Event Looper will start running. If this event is deactivated while running, the looper will stop and reset."/>
+    <value nybble="3-4" title="Start Event ID" idtype="Target Event" comment="The first event in the sequence that will be activated when the Triggering Event is activated."/>
+    <value nybble="5-6" title="Target Event End ID" idtype="Target Event" comment="The last event in the sequence. The looper will stop here after activating this event and waiting for it to be disabled."/>
+    <value nybble="8-9" title="Delay" comment="The number of frames to wait after completing the sequence before looping back. 0 = no delay (60 frames = 1 second)."/>
+  </sprite> <!-- #531: Event Looper -->
 </sprites>

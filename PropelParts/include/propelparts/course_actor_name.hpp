@@ -542,6 +542,7 @@ namespace CourseActor {
         MODEL_RES15,
         EN_BLOCK_SWITCH,
         EN_PALACE_SWITCH,
+        AC_EVENT_LOOPER,
 
         // End of custom entries, do NOT remove
         TOTAL_COURSE_ACTOR_COUNT

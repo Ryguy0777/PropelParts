@@ -814,6 +814,7 @@ namespace fProfile {
         AC_MODEL_LOADER,
         EN_BLOCK_SWITCH,
         EN_PALACE_SWITCH,
+        AC_EVENT_LOOPER,
 
         // End of custom entries, do NOT remove
         TOTAL_ACTOR_COUNT
