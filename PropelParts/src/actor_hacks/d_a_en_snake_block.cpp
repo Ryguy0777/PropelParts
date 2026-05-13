@@ -13,16 +13,16 @@ kmBranchDefCpp(0x80AA6F10, NULL, void, daEnSnakeBlock_c::dBlock_c *this_, daEnSn
     mVec3_c targetPos = blockPos;
     // Adjust spawn position based on travel direction
     switch (owner->mpTravelInfo[1]) {
-        case 1: // Up
-            targetPos.x -= owner->mBlockNum * 16.0f;
-            targetPos.y += owner->mBlockNum * 16.0f;
+        case daEnSnakeBlock_c::TRAVEL_DIR_UP:
+            targetPos.x -= owner->mBlockCount * 16.0f;
+            targetPos.y += owner->mBlockCount * 16.0f;
             break;
-        case 2: // Down
-            targetPos.x -= owner->mBlockNum * 16.0f;
-            targetPos.y -= owner->mBlockNum * 16.0f;
+        case daEnSnakeBlock_c::TRAVEL_DIR_DOWN:
+            targetPos.x -= owner->mBlockCount * 16.0f;
+            targetPos.y -= owner->mBlockCount * 16.0f;
             break;
-        case 3: // Left
-            targetPos.x -= owner->mBlockNum * 32.0f;
+        case daEnSnakeBlock_c::TRAVEL_DIR_LEFT:
+            targetPos.x -= owner->mBlockCount * 32.0f;
         // Vanilla behavior is to spawn right, so nothing to do here
     }
     this_->mPos = targetPos;
@@ -55,14 +55,14 @@ kmBranchDefCpp(0x80AA7470, NULL, int, daEnSnakeBlock_c *this_) {
             return fBase_c::CANCELED;
         }
     }
-    daEnSnakeBlock_c::sc_glbSnakeNum++;
-    this_->mBlockNum = (this_->mParam & 0xF) + 2;
+    daEnSnakeBlock_c::g_SnakeNum++;
+    this_->mBlockCount = (this_->mParam & 0xF) + 2;
     this_->mSnakeType = (this_->mParam >> 20) & 1;
     
     // Set block owners so we can access it for createMdl()
-    this_->getHeadBlock()->mpOwner = this_;
-    this_->getTailBlock()->mpOwner = this_;
-    for (int i = 0; i < this_->mBlockNum; i++) {
+    this_->getHeadBlock().mpOwner = this_;
+    this_->getTailBlock().mpOwner = this_;
+    for (int i = 0; i < this_->mBlockCount; i++) {
         this_->mBlocks[i].mpOwner = this_;
     }
 
@@ -156,14 +156,14 @@ kmBranchDefCpp(0x80AA7220, NULL, void, dActor_c *self, dActor_c *other) {
 // Thanks to Grop & RootCubed for decompiling the following functions
 kmBranchDefCpp(0x80AA8540, NULL, void, daEnSnakeBlock_c *this_) {
 	daEnSnakeBlock_c::dBlock_c *curr;
-    bool b3 = this_->getHeadBlock()->calcPos(this_->mpTravelInfo);
-    bool b4 = this_->getTailBlock()->calcPos(this_->mpTravelInfo);
-    bool b5 = false;
-    bool b6 = false;
+    bool moveDoneHead = this_->getHeadBlock().moveBlock(this_->mpTravelInfo);
+    bool moveDoneTail = this_->getTailBlock().moveBlock(this_->mpTravelInfo);
+    bool allMoveDoneHead = false;
+    bool allMoveDoneTail = false;
 
-    if (b3 || b4) {
-        b5 = this_->getHeadBlock()->calcTravelPos(this_->mpTravelInfo);
-        b6 = this_->getTailBlock()->calcTravelPos(this_->mpTravelInfo);
+    if (moveDoneHead || moveDoneTail) {
+        allMoveDoneHead = this_->getHeadBlock().nextTravelMove(this_->mpTravelInfo);
+        allMoveDoneTail = this_->getTailBlock().nextTravelMove(this_->mpTravelInfo);
 
 		// Don't play sound effect if disabled
 		if (!(this_->mParam >> 11 & 1)) {
@@ -178,12 +178,12 @@ kmBranchDefCpp(0x80AA8540, NULL, void, daEnSnakeBlock_c *this_) {
 
         curr = this_->mBlocks;
         int frame;
-        int snakeSpeed = 16.0f / daEnSnakeBlock_c::sc_snakeSpeeds[this_->mParam >> 8 & 0x3];
+        int snakeSpeed = 16.0f / daEnSnakeBlock_c::sc_SnakeSpeeds[this_->mParam >> 8 & 0x3];
         int i = 0;
         frame = 0;
 
         for (; i < this_->mCreateAnmBlockIdx; i++) {
-			if (i < this_->mBlockNum) {
+			if (i < this_->mBlockCount) {
 				curr->setAnmClr("create");
 				curr->mAnmClr.setFrame(frame, 0);
 				curr++;
@@ -192,7 +192,7 @@ kmBranchDefCpp(0x80AA8540, NULL, void, daEnSnakeBlock_c *this_) {
         }
     }
 
-    if (b5 || b6) {
+    if (allMoveDoneHead || allMoveDoneTail) {
         if (this_->mpStopState->isEqual(daEnSnakeBlock_c::StateID_Stop)) {
             this_->changeState(daEnSnakeBlock_c::StateID_Stop);
         } else {
@@ -205,35 +205,35 @@ kmBranchDefCpp(0x80AA7730, NULL, void, daEnSnakeBlock_c *this_) {
 	sRailInfoData *rail = dRail_c::getRailInfoP((this_->mParam >> 4) & 0xF);
     dCdFile_c *file = dCd_c::m_instance->getFileP(dScStage_c::m_instance->mCurrFile);
 
-    sRailNodeData *node = &file->mpRailNodes[rail->mNodeIdx];
+    sRailNodeData *node = file->mpRailNodes + rail->mNodeIdx;
     node = &node[(this_->mParam >> 12) & 0xFF];
 
     bool icy = (this_->mParam >> 20) & 1;
 
-    float nodeX = node[0].mX;
-    float nodeY = node[0].mY;
-    float x = nodeX + this_->mBlockNum * 16.0f + 8.0f;
+    float nodeX = node->mX;
+    float nodeY = node->mY;
+    float x = nodeX + this_->mBlockCount * 16.0f + 8.0f;
     float y = -nodeY - 8.0f;
 
     mVec3_c headPos(x, y, 1516.0f);
 
-    this_->getHeadBlock()->initBgCtr(this_, headPos, icy);
+    this_->getHeadBlock().initBgCtr(this_, headPos, icy);
 
     daEnSnakeBlock_c::dBlock_c *curr = this_->mBlocks;
     int i = 0;
-    if (this_->mBlockNum > 0) {
-        while (i < this_->mBlockNum) {
+    if (this_->mBlockCount > 0) {
+        while (i < this_->mBlockCount) {
             mVec3_c midPos(x, y, 1500.0f);
             curr->initBgCtr(this_, midPos, icy);
             // Adjust position changes depending on starting direction
 			switch (this_->mpTravelInfo[1]) {
-				case 1: // Up
+				case daEnSnakeBlock_c::TRAVEL_DIR_UP:
 					y -= 16.0f;
 					break;
-				case 2: // Down
+				case daEnSnakeBlock_c::TRAVEL_DIR_DOWN:
 					y += 16.0f;
 					break;
-				case 3: // Left
+				case daEnSnakeBlock_c::TRAVEL_DIR_LEFT:
 					x += 16.0f;
 					break;
 				default: // Right
@@ -246,20 +246,19 @@ kmBranchDefCpp(0x80AA7730, NULL, void, daEnSnakeBlock_c *this_) {
     }
 
     mVec3_c tailPos = mVec3_c(x, y, 1516.0f);
-    this_->getTailBlock()->initBgCtr(this_, tailPos, icy);
+    this_->getTailBlock().initBgCtr(this_, tailPos, icy);
 
-    this_->getHeadBlock()->mTravelInfoIdx = this_->mBlockNum + 1;
-    this_->getTailBlock()->mTravelInfoIdx = 1;
+    this_->getHeadBlock().mTravelInfoIdx = this_->mBlockCount + 1;
+    this_->getTailBlock().mTravelInfoIdx = 1;
 
-    // Note: Value 3 is out of bounds
-    this_->getHeadBlock()->mSnakeSpeedIdx = (this_->mParam >> 8) & 3;
-    this_->getTailBlock()->mSnakeSpeedIdx = (this_->mParam >> 8) & 3;
+    this_->getHeadBlock().mSnakeSpeed = (daEnSnakeBlock_c::dCtrlBlock_c::SnakeSpeed_e)((this_->mParam >> 8) & 3);
+    this_->getTailBlock().mSnakeSpeed = (daEnSnakeBlock_c::dCtrlBlock_c::SnakeSpeed_e)((this_->mParam >> 8) & 3);
 }
 
 kmBranchDefCpp(0x80AA73E0, NULL, bool, daEnSnakeBlock_c::dCtrlBlock_c *this_, s8 *travelInfo) {
 	mVec2_c newPos;
-    newPos.x = daEnSnakeBlock_c::sc_ctrlPosMods[travelInfo[this_->mTravelInfoIdx]].x;
-    newPos.y = daEnSnakeBlock_c::sc_ctrlPosMods[travelInfo[this_->mTravelInfoIdx]].y;
+    newPos.x = daEnSnakeBlock_c::sc_TravelDirs[travelInfo[this_->mTravelInfoIdx]].x;
+    newPos.y = daEnSnakeBlock_c::sc_TravelDirs[travelInfo[this_->mTravelInfoIdx]].y;
 
     this_->mPos.x = this_->mLastPos.x + newPos.x * 16.0f;
     this_->mPos.y = this_->mLastPos.y + newPos.y * 16.0f;
@@ -270,7 +269,7 @@ kmBranchDefCpp(0x80AA73E0, NULL, bool, daEnSnakeBlock_c::dCtrlBlock_c *this_, s8
 
 	s8 currTravelInfo = travelInfo[this_->mTravelInfoIdx];
 	if (currTravelInfo == 0) {
-		if (this_->mpOwner->_pad[0] != 0) {
+		if (this_->mpOwner->mPad[0] != 0) {
 			currTravelInfo = 1;
 			this_->mTravelInfoIdx = 1;
 		}
