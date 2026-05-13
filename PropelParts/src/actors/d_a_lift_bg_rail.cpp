@@ -9,6 +9,8 @@ const dActorData_c c_LIFT_BG_RAIL_actor_data = {fProfile::AC_LIFT_BG_RAIL, 8, -8
 dCustomProfile_c l_LIFT_BG_RAIL_profile(&g_profile_AC_LIFT_BG_RAIL, "AC_LIFT_BG_RAIL", CourseActor::AC_LIFT_BG_RAIL, &c_LIFT_BG_RAIL_actor_data);
 
 bool daLiftBgRail_c::initMovement() {
+    mControlType = CONTROL_PATH;
+    
     mRailIdx = (mParam >> 24) & 0xFF;
     mRailIndex = (mParam >> 16) & 0xFF;
 

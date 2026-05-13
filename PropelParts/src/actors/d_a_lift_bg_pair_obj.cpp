@@ -9,6 +9,8 @@ const dActorData_c c_LIFT_BG_PAIR_OBJ_actor_data = {fProfile::AC_LIFT_BG_PAIR_OB
 dCustomProfile_c l_LIFT_BG_PAIR_OBJ_profile(&g_profile_AC_LIFT_BG_PAIR_OBJ, "AC_LIFT_BG_PAIR_OBJ", CourseActor::AC_LIFT_BG_PAIR_OBJ, &c_LIFT_BG_PAIR_OBJ_actor_data);
 
 bool daLiftBgPairObj_c::initMovement() {
+    mControlType = CONTROL_PAIR_OBJ;
+
     mPairObjIdx = (mParam >> 24) & 0xFF;
 
     daEnPairObjParent_c *controller = (daEnPairObjParent_c *)findController();

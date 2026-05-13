@@ -16,6 +16,12 @@ public:
         COLL_CIRCLE,
     };
 
+    enum CONTROLTYPE_e {
+        CONTROL_PATH,
+        CONTROL_ROTATION,
+        CONTROL_PAIR_OBJ,
+    };
+
     // fBase_c overrides
     virtual int create();
     virtual int doDelete();
@@ -54,6 +60,8 @@ public:
 
     bool mVisible;
     bool mFindFail;
+
+    CONTROLTYPE_e mControlType;
 
     // Settings
     u8 mRectIdx;

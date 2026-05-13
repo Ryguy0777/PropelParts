@@ -10,6 +10,8 @@ const dActorData_c c_LIFT_BG_ROTATION_actor_data = {fProfile::AC_LIFT_BG_ROTATIO
 dCustomProfile_c l_LIFT_BG_ROTATION_profile(&g_profile_AC_LIFT_BG_ROTATION, "AC_LIFT_BG_ROTATION", CourseActor::AC_LIFT_BG_ROTATION, &c_LIFT_BG_ROTATION_actor_data);
 
 bool daLiftBgRotation_c::initMovement() {
+    mControlType = CONTROL_ROTATION;
+
     mRotationIdx = (mParam >> 24) & 0xFF;
 
     mAlwaysUp = (mParam >> 15) & 1;
