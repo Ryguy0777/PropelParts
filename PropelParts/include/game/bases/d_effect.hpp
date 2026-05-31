@@ -8,8 +8,6 @@ public:
     virtual ~followEffect_c() {}
 };
 
-void createEffect_change(const char*, unsigned long, const mVec3_c*, const mAng3_c*, const mVec3_c*);
-
 class dLevelEffect_c : public mEf::levelEffect_c {
 public:
     dLevelEffect_c() {}

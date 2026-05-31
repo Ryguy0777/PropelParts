@@ -121,7 +121,7 @@ void *LoadCustomFlowerBrres() {
             brresFile = "g3d/obj_hana_daishizen.brres";
             break;
         default:
-            int area = dScStage_c::m_instance->mCurrArea;
+            int area = dScStage_c::m_instance->mCurrAreaNo;
             arcFile = dBgGlobal_c::ms_pInstance->getEnvironment(area, dGrassBinMng_c::m_instance->mTileSlot);
             brresFile = "g3d/obj_hana.brres";
     }
@@ -138,7 +138,7 @@ void *LoadCustomGrassBrres(dRes_c *res, char *originalArc, char *originalName, i
     }
 
     // Load custom brres otherwise
-    int area = dScStage_c::m_instance->mCurrArea;
+    int area = dScStage_c::m_instance->mCurrAreaNo;
     const char *arcFile = dBgGlobal_c::ms_pInstance->getEnvironment(area, dGrassBinMng_c::m_instance->mTileSlot);
     return res->getRes(arcFile, "g3d/obj_kusa.brres").ptr();
 }

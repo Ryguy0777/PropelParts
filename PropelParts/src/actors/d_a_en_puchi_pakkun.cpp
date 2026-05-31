@@ -31,8 +31,8 @@ const sBcSensorLine l_nipper_foot = { 1, -0x4000, 0x4000, 0 };
 const sBcSensorLine l_nipper_wall = { 1, 0x3000, 0x8000, 0x8000 };
 
 const sCcDatNewF l_nipper_cc = {
-    {0.0f, 8.0f},
-    {8.0f, 8.0f},
+    0.0f, 8.0f,
+    8.0f, 8.0f,
     CC_KIND_ENEMY,
     CC_ATTACK_NONE,
     BIT_FLAG(CC_KIND_PLAYER) | BIT_FLAG(CC_KIND_PLAYER_ATTACK) | BIT_FLAG(CC_KIND_YOSHI) |
@@ -44,7 +44,7 @@ const sCcDatNewF l_nipper_cc = {
 
 int daEnPuchiPakkun_c::create() {
     // Setup our model
-    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[0], nullptr, 0x20);
+    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[mHeap::GAME_HEAP_DEFAULT], nullptr, 0x20);
     mRes = dResMng_c::m_instance->getRes("pakkun_puchi", "g3d/pakkun_puchi.brres");
     nw4r::g3d::ResMdl mdl = mRes.GetResMdl("pakkun_puchi");
     mNipperModel.create(mdl, &mAllocator, 0x20, 1, nullptr);
@@ -82,9 +82,9 @@ int daEnPuchiPakkun_c::create() {
 
     // Set yoshi eating behavior
     if (mSpitsFire) {
-        mEatBehaviour = EAT_TYPE_FIREBALL;
+        mEatBehavior = EAT_TYPE_FIREBALL;
     } else {
-        mEatBehaviour = EAT_TYPE_EAT_PERMANENT;
+        mEatBehavior = EAT_TYPE_DRINK;
     }
 
     // Tile sensors

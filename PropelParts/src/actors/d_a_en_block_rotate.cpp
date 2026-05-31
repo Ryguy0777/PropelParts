@@ -59,7 +59,7 @@ void daEnBlockRotate_c::callBackF(dActor_c *self, dActor_c *other) {
 
 int daEnBlockRotate_c::create() {
     // Setup model
-    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[0], nullptr, 0x20);
+    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[mHeap::GAME_HEAP_DEFAULT], nullptr, 0x20);
 
     mRes = dResMng_c::m_instance->getRes("block_rotate", "g3d/block_rotate.brres");
     nw4r::g3d::ResMdl mdl = mRes.GetResMdl("block_rotate");
@@ -236,14 +236,14 @@ bool daEnBlockRotate_c::playerOverlaps() {
     mVec3_c myTR(mPos.x + 8.0f, mPos.y + 8.0f, 0.0f);
 
     while ((player = (dActor_c*)fManager_c::searchBaseByProfName(fProfile::PLAYER, player)) != 0) {
-        float centerX = player->mPos.x + player->mCc.mCcData.mOffset.x;
-        float centerY = player->mPos.y + player->mCc.mCcData.mOffset.y;
+        float centerX = player->mPos.x + player->mCc.mCcData.mBase.mOffset.x;
+        float centerY = player->mPos.y + player->mCc.mCcData.mBase.mOffset.y;
 
-        float left = centerX - player->mCc.mCcData.mSize.x;
-        float right = centerX + player->mCc.mCcData.mSize.x;
+        float left = centerX - player->mCc.mCcData.mBase.mSize.x;
+        float right = centerX + player->mCc.mCcData.mBase.mSize.x;
 
-        float top = centerY + player->mCc.mCcData.mSize.y;
-        float bottom = centerY - player->mCc.mCcData.mSize.y;
+        float top = centerY + player->mCc.mCcData.mBase.mSize.y;
+        float bottom = centerY - player->mCc.mCcData.mBase.mSize.y;
 
         mVec3_c playerBL(left, bottom + 0.1f, 0.0f);
         mVec3_c playerTR(right, top - 0.1f, 0.0f);

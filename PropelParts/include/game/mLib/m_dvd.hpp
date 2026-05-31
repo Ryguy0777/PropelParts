@@ -11,9 +11,18 @@ public:
     virtual void init();
 
     void destroy();
+    void waitDone() const;
+
+    bool isDone() const { return mDone; }
 
     int mReadLength;
     bool mDone;
+};
+
+class mDvd_callback_c : public mDvd_command_c {
+public:
+    static mDvd_callback_c *create(void *(*callback)(void *), void *param);
+    static mDvd_callback_c *createOrDie(void *(*callback)(void *), void *param);
 };
 
 class mDvd_mountMemArchive_c : public mDvd_command_c {
@@ -28,6 +37,14 @@ public:
     EGG::Archive *mpArchive;
     EGG::Heap *mpHeap;
     unsigned long mArchiveSize;
+};
+
+class mDvd_toMainRam_c : public mDvd_command_c {
+public:
+    static mDvd_toMainRam_c *create(const char *path, u8 allocDirection, EGG::Heap *heap);
+
+    u8 mPad[0x4];
+    void *mpData;
 };
 
 namespace mDvd {

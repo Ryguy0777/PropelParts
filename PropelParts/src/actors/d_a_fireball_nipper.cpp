@@ -33,8 +33,8 @@ bool daFireBall_Nipper_c::initialize() {
 extern "C" void ccCallback_BrosFire(dCc_c *, dCc_c *);
 
 sCcDatNewF l_nipper_fire_cc = {
-    {0.0f, 0.0f},
-    {3.0f, 3.0f},
+    0.0f, 0.0f,
+    3.0f, 3.0f,
     CC_KIND_ENEMY,
     CC_ATTACK_NONE,
     BIT_FLAG(CC_KIND_PLAYER) | BIT_FLAG(CC_KIND_PLAYER_ATTACK) | BIT_FLAG(CC_KIND_YOSHI) |

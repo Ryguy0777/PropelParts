@@ -35,7 +35,7 @@ public:
     virtual void initializeState_DieOther();
     virtual void executeState_DieOther();
 
-    virtual void setDamage(dActor_c *actor);
+    virtual bool setDamage(dActor_c *actor);
 
     virtual bool createIceActor();
 

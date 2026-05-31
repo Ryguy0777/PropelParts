@@ -32,7 +32,7 @@ public:
     virtual void initializeState_DieFall();
     virtual void executeState_DieFall();
 
-    virtual void setDamage(dActor_c *actor);
+    virtual bool setDamage(dActor_c *actor);
 
     virtual void boyonBegin();
 

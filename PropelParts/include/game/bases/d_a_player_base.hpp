@@ -338,7 +338,7 @@ public:
         BGC_VINE_TOUCH_L = BIT_FLAG(19), ///< Touching a vine / mesh net / rock wall on the left.
         BGC_VINE_TOUCH_R = BIT_FLAG(20), ///< Touching a vine / mesh net / rock wall on the right.
         BGC_NON_BREAK_BLOCK_HIT = BIT_FLAG(21),
-        BGC_54 = BIT_FLAG(22),
+        BGC_COIN_BLOCK_HIT = BIT_FLAG(22),
         BGC_PRESS_HEAD_HIT = BIT_FLAG(23),
         BGC_BLOCK_HIT = BIT_FLAG(24),
         BGC_57 = BIT_FLAG(25),
@@ -378,8 +378,8 @@ public:
         STATUS_17, ///< [Dokan related]
         STATUS_THROW, ///< The player is throwing something.
         STATUS_KANI_WALK, ///< The player is doing a crab walk on a cliff.
-        STATUS_1A,
-        STATUS_1B,
+        STATUS_SLOPE_HEAD_PUSH_L, ///< The player cannot move further left on a slope because of a ceiling.
+        STATUS_SLOPE_HEAD_PUSH_R, ///< The player cannot move further right on a slope because of a ceiling.
         STATUS_HIP_ATTACK_FALL, ///< The player is falling while ground pounding.
         STATUS_HIP_ATTACK_LAND, ///< The player has landed after ground pounding. Only active on one frame.
         STATUS_HIP_ATTACK_STAND_UP, ///< The player is standing up after ground pounding. Only active on one frame.
@@ -397,13 +397,13 @@ public:
         STATUS_IS_SPIN_HOLD_REQ, ///< If the player spins, stay in place. [Used for the twisting screws].
         STATUS_TWIRL, ///< The player is twirling in midair.
         STATUS_WAS_TWIRL, ///< The player was twirling in midair the previous frame.
-        STATUS_30 = 0x30,
+        STATUS_SLIP_ACTIVE = 0x30, ///< The player is sliding.
         STATUS_31,
         STATUS_32,
         STATUS_VINE, ///< The player is clinging to a vine / mesh net / rock wall.
         STATUS_HANG, ///< The player is hanging from a ceiling rope.
         STATUS_POLE, ///< The player is climbing a pole.
-        STATUS_36,
+        STATUS_TARZAN_ROPE,
         STATUS_KANI_HANG, ///< The player is hanging from a cliff.
         STATUS_KANI_HANG_ANIMATION, ///< The player is animating into the hanging pose on a cliff.
         STATUS_39, ///< [Swim related]
@@ -416,7 +416,7 @@ public:
         STATUS_40, ///< [Water jump?]
         STATUS_SWIM_AGAINST_JET_H, ///< The player is swimming against a horizontal water jet stream.
         STATUS_SWIM_AGAINST_JET_V, ///< The player is swimming against a vertical water jet stream.
-        STATUS_43,
+        STATUS_WIND_AIRBORNE, ///< The player is airborne while in a wind zone.
         STATUS_45 = 0x45,
         STATUS_46,
         STATUS_47,
@@ -444,13 +444,13 @@ public:
         STATUS_5E,
         STATUS_5F,
         STATUS_ENEMY_STAGE_CLEAR, ///< The player has cleared an enemy ambush.
-        STATUS_61,
+        STATUS_JUMP_COUNT_INCREASED, ///< The @ref mJumpComboTimer "jump combo counter" was incremented this frame.
         STATUS_62,
         STATUS_63,
         STATUS_64,
         STATUS_GOAL_POLE_TOUCHED, ///< The player has touched the goal pole.
         STATUS_GOAL_POLE_WAIT_BELOW_PLAYER, ///< The player is waiting for the player below to slide down the goal pole.
-        STATUS_67,
+        STATUS_GOAL_POLE_CAN_SLIDE, ///< The player can start sliding down the goal pole.
         STATUS_GOAL_POLE_FINISHED_SLIDE_DOWN, ///< The player has reached the bottom of the goal pole after sliding down.
         STATUS_GOAL_POLE_READY_FOR_JUMP_OFF, ///< The player is ready to jump off the goal pole.
         STATUS_GOAL_POLE_TURN, ///< The player is turning toward the screen after jumping off the goal pole.
@@ -502,7 +502,7 @@ public:
         STATUS_9C,
         STATUS_9D,
         STATUS_9E,
-        STATUS_9F,
+        STATUS_CAN_SPIN, ///< The player can shake the controller to do a spin jump or a propeller spin.
         STATUS_A0,
         STATUS_A1,
         STATUS_A2,
@@ -709,16 +709,18 @@ public:
 
     /**
      * @brief Starts a jump action with the given parameters.
-     * Does not start a jump if the player is in a climbing state.
+     * @unofficial
+     * @details Does not start a jump if the player is in a climbing state.
      * @param jumpSpeed The vertical speed of the jump.
      * @param speedF The @ref mSpeedF "forward speed".
      * @param allowSteer Whether the player can steer in midair.
      * @param keyMode The input settings for the jump. (0: none, 1: force jump pressed, 2: force jump not pressed)
      * @param jumpMode The type of jump to perform. [TODO: document the jump modes]
      */
-    virtual bool setJump(float jumpSpeed, float speedF, bool allowSteer, int keyMode, int jumpMode); ///< @unofficial
+    virtual bool setJump(float jumpSpeed, float speedF, bool allowSteer, int keyMode, int jumpMode);
     /// @brief Starts a jump action unconditionally. See setJump().
-    virtual bool _setJump(float jumpSpeed, float speedF, bool allowSteer, int keyMode, int jumpMode); ///< @unofficial
+    /// @unofficial
+    virtual bool _setJump(float jumpSpeed, float speedF, bool allowSteer, int keyMode, int jumpMode);
     virtual bool setWaitJump(float jumpSpeed);
 
     virtual bool setHipAttackOnEnemy(mVec3_c *);
@@ -900,8 +902,8 @@ public:
     void executeDemoOutDokanLR();
     void endDemoOutDokan();
     float getWaterDokanCenterOffset(float);
-    bool demo_dokan_move_x(float, float);
-    bool demo_dokan_move_y(float, float);
+    BOOL demo_dokan_move_x(float, float);
+    BOOL demo_dokan_move_y(float, float);
     void setObjDokanIn(dBg_ctr_c *, mVec3_c &, int);
     void setExitRailDokan();
     void setDemoOutNextGotoBlock(int nextGotoID, int delay, int fadeType); ///< @unofficial
@@ -1158,7 +1160,7 @@ public:
     int mTurnGroundType;
     u8 mTurnEffectFade;
     mEf::levelEffect_c mHitAttackDropEffect; ///< The wind effect when doing a ground pound.
-    int m_344; ///< [Staff credit ground pound break related]
+    int wasStaffCreditGroundHipAttack; ///< Whether the floor was ground pounded during the staff credits. [Used to allow for the coin block ground pounding].
     mVec3_c mJumpDaiOffset; ///< The difference vector between this player and the player being jumped on.
     float mJumpDaiSpeedF; ///< The forward speed before doing a big jump.
     /// Timer for disabling another big jump after being unable to do a big jump

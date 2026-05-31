@@ -242,8 +242,8 @@ void dCollisionRender_c::drawXlu() {
 
                 float centreX = currCc->getCenterPosX();
                 float centreY = currCc->getCenterPosY();
-                float edgeDistX = currCc->mCcData.mSize.x;
-                float edgeDistY = currCc->mCcData.mSize.y;
+                float edgeDistX = currCc->mCcData.mBase.mSize.x;
+                float edgeDistY = currCc->mCcData.mBase.mSize.y;
                 u8 collType = currCc->mShape;
 
                 // Call DrawCircle for circles
@@ -350,20 +350,20 @@ void dCollisionRender_c::drawXlu() {
             float ownerPosY = owner->mPos.y;
 
             // Make an array of sensors
-            sBcSensorBase *sensors[4] = {currBc->mpSensorFoot, currBc->mpSensorHead, currBc->mpSensorWall, currBc->mpSensorWall};
+            sBcSensorIf_c *sensors[4] = {currBc->mpSensorFoot, currBc->mpSensorHead, currBc->mpSensorWall, currBc->mpSensorWall};
 
             // Draw the sensors
             for (int i = 0; i < 4; i++) {
 
                 // Check if the sensor exists
-                sBcSensorBase *sensor = sensors[i];
+                sBcSensorIf_c *sensor = sensors[i];
                 if (sensor == nullptr)
                     continue;
 
                 // Multiplier for the adjacent sensors
                 int mult = (i == 3) ? -1 : 1;
                 float x1, y1, x2, y2;
-                bool isLine = sensor->mFlags & 1;
+                bool isLine = ((sBcPointData *)sensor)->mFlags & 1;
 
                 if (isLine == false) {
                     sBcSensorPoint *pointSensor = (sBcSensorPoint *)sensor;

@@ -9,9 +9,9 @@
 STATE_DEFINE(dRemoconMng_c::dConnect_c::dExtension_c, Gamecube);
 
 void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Gamecube() {
-    OSReport("gamecube controller detected in port %d!\n", mChannel+1);
-    mControllerType = CONTROLLER_TYPE_e::GAMECUBE;
-    dCustomControllerInfo *cont = getCustomController(mChannel);
+    //OSReport("gamecube controller detected in port %d!\n", mChannel+1);
+    mExtensionType = CONTROLLER_TYPE_e::GAMECUBE;
+    dCustomControllerInfo *cont = getCustomController(mControllerID);
     cont->mFlags |= CCFLAG_HAS_CUSTOM;
     cont->mFlags |= CCFLAG_NO_ACC;
     cont->mFlags |= CCFLAG_NO_WIIMOTE;
@@ -22,7 +22,7 @@ void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Gamecube() {
 void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Gamecube() {}
 
 void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Gamecube() {
-    u8 extension = mPad::g_core[mChannel]->maStatus->dev_type;
+    u8 extension = mPad::g_core[mControllerID]->maStatus->dev_type;
     if (extension != WPAD_DEV_GAMECUBE) {
         dCustomController_c::changeRemoconMgrState(this, extension);
     }
@@ -125,7 +125,7 @@ u32 dCustomController_c::checkForGCConnection(int channel) {
             if (!(mControllers[channel].mFlags & CCFLAG_NO_AUTOCONNECT)) {
                 if (dScene_c::m_nowScene == fProfile::BOOT && !(mControllers[channel].mFlags & CCFLAG_HAS_AUTOCONNECT) && WPADProbe(channel, NULL) != -1) {
                     // Don't detect a GC controller if connected on game boot, unless a button is pressed or there's no wiimote
-                    OSReport("GC Controller detected on boot! ignoring for now...\n");
+                    //OSReport("GC Controller detected on boot! ignoring for now...\n");
                     // Don't connect GC controller on boot
                     mControllers[channel].mFlags |= CCFLAG_NO_AUTOCONNECT;
                     return GCC_TYPE_e::NONE;
@@ -133,7 +133,7 @@ u32 dCustomController_c::checkForGCConnection(int channel) {
                 return GCC_TYPE_e::STANDARD;
             } else { // GC is connected on boot, don't connect unless we press a button
                 if (mControllers[channel].mPadInfo.mHold) {
-                    OSReport("Pressing something! connecting the controller\n");
+                    //OSReport("Pressing something! connecting the controller\n");
                     mControllers[channel].mFlags |= CCFLAG_HAS_AUTOCONNECT;
                     mControllers[channel].mFlags &= ~CCFLAG_NO_AUTOCONNECT;
                     return GCC_TYPE_e::STANDARD;

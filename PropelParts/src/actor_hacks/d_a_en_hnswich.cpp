@@ -99,7 +99,7 @@ const char *l_switch_anim_name[5] = {
 };
 
 kmBranchDefCpp(0x80a19e70, NULL, void, daEnHnswich_c *this_) {
-    this_->mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[0], nullptr, 0x20);
+    this_->mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[mHeap::GAME_HEAP_DEFAULT], nullptr, 0x20);
 
     if (this_->mProfName == fProfile::EN_PALACE_SWITCH) {
         this_->mRes = dResMng_c::m_instance->getRes("switch_palace", "g3d/switch_palace.brres");

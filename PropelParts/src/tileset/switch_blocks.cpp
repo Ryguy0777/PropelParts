@@ -19,7 +19,7 @@ kmWrite32(0x80102C3C, 0x98830380);
 kmBranchDefCpp(0x800784D0, NULL, void, dBg_c *_self) {
     _self->mTexMng.mWmSwitchRelated = dInfo_c::m_instance->mWmSwitch;
 
-    if (dInfo_c::mGameFlag & dInfo_c::GAME_FLAG_4) {
+    if (dInfo_c::mGameFlag & dInfo_c::GAME_FLAG_IS_FREE_MODE) {
         _self->mTexMng.mWmSwitchRelated = 1;
     }
 }

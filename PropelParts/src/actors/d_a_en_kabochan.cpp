@@ -3,7 +3,7 @@
 #include <propelparts/bases/d_custom_profile.hpp>
 #include <game/bases/d_a_player_base.hpp>
 #include <constants/sound_list.h>
-#include <game/bases/d_effect.hpp>
+#include <game/bases/d_ef.hpp>
 
 CUSTOM_ACTOR_PROFILE(EN_KABOCHAN, daEnKabochan_c, fProfile::EN_KURIBO, fProfile::DRAW_ORDER::EN_KURIBO, 0x12);
 
@@ -14,7 +14,7 @@ dCustomProfile_c l_KABOCHAN_profile(&g_profile_EN_KABOCHAN, "EN_KABOCHAN", Cours
 bool daEnKabochan_c::hitCallback_HipAttk(dCc_c *self, dCc_c *other) {
     daPlBase_c *player = (daPlBase_c *)other->mpOwner;
     u8 direction = getTrgToSrcDir_Main(player->getCenterPos().x, getCenterPos().y);
-    s8 *playerNo = player->getPlrNo();
+    s8 playerNo = player->getPlrNo();
 
     setDeathSound_HipAttk();
     mVec3_c effPos(mPos.x, getCenterPos().y, 5500.0f);
@@ -28,7 +28,7 @@ bool daEnKabochan_c::hitCallback_HipAttk(dCc_c *self, dCc_c *other) {
         score,
         -1,
         direction,
-        *playerNo
+        playerNo
     };
     mDeathInfo = splunkinDeathInfo;
     return true;

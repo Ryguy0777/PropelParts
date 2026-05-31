@@ -19,20 +19,20 @@ void dCustomController_c::makeInstance() {
 void dCustomController_c::changeRemoconMgrState(dRemoconMng_c::dConnect_c::dExtension_c *self, u32 extension) {
     switch (extension) {
         case WPAD_DEV_CORE: // Sideways wiimote
-            self->mStateMgr.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_None);
+            self->mState.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_None);
             return;
         case WPAD_DEV_FREESTYLE: // Nunchuck
-            self->mStateMgr.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Freestyle);
+            self->mState.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Freestyle);
             return;
 #ifdef CONTROLLER_EXPANSION_ENABLED
         case WPAD_DEV_CLASSIC: // Classic
-            self->mStateMgr.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Classic);
+            self->mState.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Classic);
             return;
         case WPAD_DEV_GAMECUBE: // Gamecube
-            self->mStateMgr.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Gamecube);
+            self->mState.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Gamecube);
             return;
         /* case WPAD_DEV_GUITAR: // Guitar
-            self->mStateMgr.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Guitar);
+            self->mState.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Guitar);
             return; */
 #endif
         case WPAD_DEV_FUTURE: // Unsupported
@@ -40,7 +40,7 @@ void dCustomController_c::changeRemoconMgrState(dRemoconMng_c::dConnect_c::dExte
 #ifndef CONTROLLER_EXPANSION_ENABLED
         case WPAD_DEV_CLASSIC:
 #endif
-            self->mStateMgr.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Other);
+            self->mState.changeState(dRemoconMng_c::dConnect_c::dExtension_c::StateID_Other);
             return;
     }
 }

@@ -39,8 +39,8 @@ dHeapBarRender_c dHeapBarRender_c::m_instance;
 // Heap array
 const EGG::Heap *dHeapBarRender_c::sc_heapList[] = {
     nullptr,
-    mHeap::g_gameHeaps[1],
-    mHeap::g_gameHeaps[2],
+    mHeap::g_gameHeaps[mHeap::GAME_HEAP_MEM1],
+    mHeap::g_gameHeaps[mHeap::GAME_HEAP_MEM2],
     mHeap::g_archiveHeap
 };
 

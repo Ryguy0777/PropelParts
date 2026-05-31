@@ -23,7 +23,7 @@ kmCallDefCpp(0x8013D8EC, void) {
     // Return to worldmap if 2/A pressed OR in Coin Battle/Free Play
     int pressed = dGameKey_c::m_instance->mRemocon[0]->mDownButtons;
     if (pressed & (WPAD_BUTTON_2 | WPAD_BUTTON_A) ||
-        dInfo_c::mGameFlag & (dInfo_c::GAME_FLAG_IS_COIN_COURSE | dInfo_c::GAME_FLAG_4)) {
+        dInfo_c::mGameFlag & (dInfo_c::GAME_FLAG_IS_COIN_COURSE | dInfo_c::GAME_FLAG_IS_FREE_MODE)) {
         dScStage_c::setNextScene(fProfile::WORLD_MAP, 0, (dScStage_c::Exit_e)1, (dFader_c::fader_type_e)2);
         return;
     }

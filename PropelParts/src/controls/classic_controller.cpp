@@ -5,9 +5,9 @@
 STATE_DEFINE(dRemoconMng_c::dConnect_c::dExtension_c, Classic);
 
 void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Classic() {
-    OSReport("classic controller detected in port %d!\n", mChannel+1);
-    mControllerType = CONTROLLER_TYPE_e::CLASSIC;
-    dCustomControllerInfo *cont = getCustomController(mChannel);
+    //OSReport("classic controller detected in port %d!\n", mChannel+1);
+    mExtensionType = CONTROLLER_TYPE_e::CLASSIC;
+    dCustomControllerInfo *cont = getCustomController(mControllerID);
     cont->mFlags |= CCFLAG_HAS_CUSTOM;
     cont->mFlags |= CCFLAG_NO_ACC;
     cont->mFlags &= ~CCFLAG_NO_WIIMOTE;
@@ -18,7 +18,7 @@ void dRemoconMng_c::dConnect_c::dExtension_c::initializeState_Classic() {
 void dRemoconMng_c::dConnect_c::dExtension_c::finalizeState_Classic() {}
 
 void dRemoconMng_c::dConnect_c::dExtension_c::executeState_Classic() {
-    u8 extension = mPad::g_core[mChannel]->maStatus->dev_type;
+    u8 extension = mPad::g_core[mControllerID]->maStatus->dev_type;
     if (extension != WPAD_DEV_CLASSIC) {
         dCustomController_c::changeRemoconMgrState(this, extension);
     }

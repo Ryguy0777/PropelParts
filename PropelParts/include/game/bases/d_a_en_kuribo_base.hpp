@@ -28,11 +28,11 @@ public:
     virtual void finalizeState_DieOther();
 
     virtual void fumidamageSE(const mVec3_c &pos, int);
-    virtual void setDamage(dActor_c *actor);
+    virtual bool setDamage(dActor_c *actor);
 
     virtual void beginFunsui();
     virtual void endFunsui();
-    virtual void isFunsui() const;
+    virtual BOOL isFunsui() const;
 
     // New virtuals
     STATE_VIRTUAL_FUNC_DECLARE(daEnKuriboBase_c, Walk);

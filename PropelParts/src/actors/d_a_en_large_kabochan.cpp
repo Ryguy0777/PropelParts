@@ -4,7 +4,7 @@
 #include <game/bases/d_a_player_base.hpp>
 #include <game/bases/d_actor_manager.hpp>
 #include <constants/sound_list.h>
-#include <game/bases/d_effect.hpp>
+#include <game/bases/d_ef.hpp>
 
 CUSTOM_ACTOR_PROFILE(EN_LARGE_KABOCHAN, daEnLargeKabochan_c, fProfile::EN_LARGE_KURIBO, fProfile::DRAW_ORDER::EN_LARGE_KURIBO, 0x12);
 
@@ -22,7 +22,7 @@ const sBcSensorLine l_large_kabochan_wall = { 1, 0x14000, 0x0A000, 0x14000 };
 bool daEnLargeKabochan_c::hitCallback_HipAttk(dCc_c *self, dCc_c *other) {
     daPlBase_c *player = (daPlBase_c *)other->mpOwner;
     u8 direction = getTrgToSrcDir_Main(player->getCenterPos().x, getCenterPos().y);
-    s8 *playerNo = player->getPlrNo();
+    s8 playerNo = player->getPlrNo();
 
     setDeathSound_HipAttk();
     mVec3_c effPos(mPos.x, getCenterPos().y, 5500.0);
@@ -36,7 +36,7 @@ bool daEnLargeKabochan_c::hitCallback_HipAttk(dCc_c *self, dCc_c *other) {
         score,
         -1,
         direction,
-        *playerNo
+        playerNo
     };
     mDeathInfo = splunkinDeathInfo;
     return true;
@@ -190,15 +190,15 @@ void daEnLargeKabochan_c::initialize() {
     mScale = mVec3_c(2.5f, 2.5f, 2.5f);
     mCenterOffs = mVec3_c(0.0f, 20.0f, 0.0f);
 
-    mCc.mCcData.mOffset.y = 20.0f;
-    mCc.mCcData.mSize.set(20.0f, 20.0f);
+    mCc.mCcData.mBase.mOffset.y = 20.0f;
+    mCc.mCcData.mBase.mSize.set(20.0f, 20.0f);
 
     mBc.set(this, l_large_kabochan_foot, nullptr, l_large_kabochan_wall);
 
     mVisibleAreaOffset.y = 20.0f;
     mVisibleAreaSize.set(40.0f, 40.0f);
 
-    mEatBehaviour = EAT_TYPE_NONE;
+    mEatBehavior = EAT_TYPE_NONE;
 
     mFireHitCount = 3;
     mIceMng.setIceStatus(1, 0, 4);

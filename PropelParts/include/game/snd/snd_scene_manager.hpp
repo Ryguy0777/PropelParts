@@ -3,6 +3,11 @@
 
 class SndSceneMgr {
 public:
+    void moveMissFin();
+    void FUN_8019d5b0(u8); ///< @unofficial
+    void fn_8019be60(int); ///< @unofficial
+    void fn_8019bd90(int); ///< @unofficial
+
     void enterHBM();
     void exitHBM();
 

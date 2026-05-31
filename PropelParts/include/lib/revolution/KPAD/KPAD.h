@@ -71,6 +71,8 @@ s32 KPADRead(s32 chan, KPADStatus* pSamples, s32 numSamples);
 
 void KPADInit(void);
 
+void KPADDisableDPD(s32 chan);
+
 #ifdef __cplusplus
 }
 #endif

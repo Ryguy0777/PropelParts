@@ -14,8 +14,8 @@ const dActorData_c c_STAR_COIN_FAKE_actor_data = {fProfile::EN_STAR_COIN_FAKE, 0
 dCustomProfile_c l_STAR_COIN_FAKE_profile(&g_profile_EN_STAR_COIN_FAKE, "EN_STAR_COIN_FAKE", CourseActor::EN_STAR_COIN_FAKE, &c_STAR_COIN_FAKE_actor_data, l_STAR_COIN_FAKE_res);
 
 const sCcDatNewF l_fakeStarCoin_cc = {
-    {0.0f, -3.0f},
-    {12.0f, 15.0f},
+    0.0f, -3.0f,
+    12.0f, 15.0f,
     CC_KIND_ENEMY,
     CC_ATTACK_NONE,
     BIT_FLAG(CC_KIND_PLAYER) | BIT_FLAG(CC_KIND_PLAYER_ATTACK) | BIT_FLAG(CC_KIND_YOSHI) |
@@ -27,7 +27,7 @@ const sCcDatNewF l_fakeStarCoin_cc = {
 
 int daEnStarCoinFake_c::create() {
     // Load the model
-    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[0], nullptr, 0x20);
+    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[mHeap::GAME_HEAP_DEFAULT], nullptr, 0x20);
 
     nw4r::g3d::ResFile resFile = dResMng_c::m_instance->getRes("star_coin", "g3d/star_coin.brres");
     nw4r::g3d::ResMdl mdl = resFile.GetResMdl("star_coinA");
@@ -53,9 +53,9 @@ int daEnStarCoinFake_c::create() {
 int daEnStarCoinFake_c::execute() {
     mStateMgr.executeState();
     if (!mRotateX) {
-        mAngle.y = -dCoin_c::m_shapeAngle.y;
+        mAngle.y = -dCoin_c::getShapeAngle().y;
     } else {
-        mAngle.x = -dCoin_c::m_shapeAngle.y;
+        mAngle.x = -dCoin_c::getShapeAngle().y;
     }
 
     return SUCCEEDED;

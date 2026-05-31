@@ -11,7 +11,7 @@ public:
 
     static void analyzeTag(unsigned short initialTag, const wchar_t *string, u8 *outArgsSize, unsigned long *outCmd, void **args);
 
-    const wchar_t *getMsg(unsigned long group, unsigned long messageID);
+    wchar_t *getMsg(ulong messageGroup, ulong messageID);
 
     const void *getMsgEntry(unsigned long group, unsigned long messageID);
     u32 getMsgID(unsigned short);

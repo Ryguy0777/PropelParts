@@ -1,10 +1,12 @@
-#ifndef NW4R_DB_EXCEPTION_H
-#define NW4R_DB_EXCEPTION_H
+#pragma once
 
+#include <nw4r/types_nw4r.h>
 #include <revolution/OS/OSContext.h>
 
 namespace nw4r {
 namespace db {
+
+void Exception_SetDisplayInfo(u16);
 
 void Exception_Printf_(const char* format, ...);
 void ShowMainInfo_(u16 error, const OSContext* context, ulong dsisr, ulong dar);
@@ -14,5 +16,3 @@ void* sException();
 
 } // namespace db
 } // namespace nw4r
-
-#endif

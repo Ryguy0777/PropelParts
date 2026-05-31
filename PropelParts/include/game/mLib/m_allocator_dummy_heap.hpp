@@ -11,7 +11,7 @@ public:
     mAllocatorDummyHeap_c();
     virtual ~mAllocatorDummyHeap_c();
 
-    virtual int getHeapKind() const;
+    virtual EHeapKind getHeapKind() const;
 
     virtual void initAllocator(EGG::Allocator *allocator, long alignment);
 
@@ -19,11 +19,11 @@ public:
     virtual void free(void *ptr);
 
     virtual void destroy();
-    virtual void *resizeForMBlock(void *ptr, size_t newSize);
+    virtual int resizeForMBlock(void *ptr, size_t newSize);
 
     virtual u32 getTotalFreeSize();
-    virtual u32 getAllocatableSize(long alignment);
-    virtual bool adjust();
+    virtual size_t getAllocatableSize(long alignment);
+    virtual size_t adjust();
 
     static mAllocatorDummyHeap_c *getInstance();
 

@@ -1,6 +1,8 @@
 #pragma once
+
 #include <types.h>
 #include <game/mLib/m_vec.hpp>
+#include <lib/egg/core/eggHeap.h>
 
 class dGameKeyCore_c {
 public:
@@ -37,11 +39,24 @@ class dGameKey_c {
 public:
     virtual ~dGameKey_c();
 
-    dGameKeyCore_c *mRemocon[4];
+    void read();
 
     short getAccVerticalAngleX(int plNo) {
         return mRemocon[plNo]->getAccVerticalAngleX() / 65536;
     }
+
+    // [These two functions must have different types to match]
+    bool checkButtonsDown(s32 i) {
+        return mRemocon[i]->mDownButtons != 0;
+    }
+
+    bool checkShaking(u32 i) {
+        return mRemocon[i]->mIsShaking != 0;
+    }
+
+    static void createInstance(EGG::Heap *heap);
+
+    dGameKeyCore_c *mRemocon[4];
 
     static dGameKey_c *m_instance;
 };

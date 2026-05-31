@@ -142,7 +142,7 @@ kmBranchDefCpp(0x80AA7220, NULL, void, dActor_c *self, dActor_c *other) {
         bool activate = false;
         if (other->mKind == dActor_c::STAGE_ACTOR_PLAYER) {
             activate = true;
-        } else if (other->mKind == dActor_c::STAGE_ACTOR_YOSHI && *other->getPlrNo() != -1) {
+        } else if (other->mKind == dActor_c::STAGE_ACTOR_YOSHI && other->getPlrNo() != -1) {
             activate = true;
         }
         if (activate) {

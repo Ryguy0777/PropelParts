@@ -326,8 +326,8 @@ void daEnHeihoBalloon_c::popIfPlayerBelow() {
 }
 
 const sCcDatNewF l_heiho_balloon_cc = {
-    {0.0f, 10.5f},
-    {15.0f, 15.0f},
+    0.0f, 10.5f,
+    15.0f, 15.0f,
     CC_KIND_BALLOON,
     CC_ATTACK_NONE,
     BIT_FLAG(CC_KIND_PLAYER) | BIT_FLAG(CC_KIND_PLAYER_ATTACK) | BIT_FLAG(CC_KIND_YOSHI) |
@@ -357,7 +357,7 @@ void daEnHeihoBalloon_c::initializeState_Balloon() {
     mBalloonCc.entry();
 
     if (mIsBalloon) {
-        mBalloonCc.mCcData.mOffset.y = -10.0f;
+        mBalloonCc.mCcData.mBase.mOffset.y = -10.0f;
     }
 }
 

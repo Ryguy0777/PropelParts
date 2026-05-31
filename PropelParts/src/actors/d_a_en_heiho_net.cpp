@@ -30,8 +30,8 @@ const sBcSensorLine l_heiho_net_foot = { 1, -0x4000, 0x4000, 0 };
 const sBcSensorLine l_heiho_net_wall = { 1, 0x3000, 0x8000, 0x8000 };
 
 const sCcDatNewF l_heiho_net_cc = {
-    {0.0f, 10.0f},
-    {8.0f, 10.0f},
+    0.0f, 10.0f,
+    8.0f, 10.0f,
     CC_KIND_ENEMY,
     CC_ATTACK_NONE,
     BIT_FLAG(CC_KIND_PLAYER) | BIT_FLAG(CC_KIND_PLAYER_ATTACK) | BIT_FLAG(CC_KIND_YOSHI) |
@@ -50,7 +50,7 @@ int daEnHeihoNet_c::create() {
     mVertical = mParam >> 18 & 1;
     
     // Setup our model
-    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[0], nullptr, 0x20);
+    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[mHeap::GAME_HEAP_DEFAULT], nullptr, 0x20);
     
     loadModel();
 
@@ -82,7 +82,7 @@ int daEnHeihoNet_c::create() {
     mVisibleAreaOffset.set(0.0f, 12.0f);
 
     // Set yoshi eating behavior
-    mEatBehaviour = EAT_TYPE_EAT_PERMANENT;
+    mEatBehavior = EAT_TYPE_DRINK;
 
     mIceMng.setIceStatus(0, 3, 3);
 

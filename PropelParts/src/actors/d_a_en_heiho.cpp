@@ -25,8 +25,8 @@ const sBcSensorLine l_heiho_foot = { 1, -0x4000, 0x4000, 0 };
 const sBcSensorLine l_heiho_wall = { 1, 0x3000, 0x8000, 0x8000 };
 
 const sCcDatNewF l_heiho_cc = {
-    {0.0f, 10.0f},
-    {8.0f, 10.0f},
+    0.0f, 10.0f,
+    8.0f, 10.0f,
     CC_KIND_ENEMY,
     CC_ATTACK_NONE,
     BIT_FLAG(CC_KIND_PLAYER) | BIT_FLAG(CC_KIND_PLAYER_ATTACK) | BIT_FLAG(CC_KIND_YOSHI) |
@@ -38,7 +38,7 @@ const sCcDatNewF l_heiho_cc = {
 
 int daEnHeiho_c::create() {
     // Setup our model
-    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[0], nullptr, 0x20);
+    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[mHeap::GAME_HEAP_DEFAULT], nullptr, 0x20);
     
     loadModel();
 
@@ -72,7 +72,7 @@ int daEnHeiho_c::create() {
     mVisibleAreaOffset.set(0.0f, 12.0f);
 
     // Set yoshi eating behavior
-    mEatBehaviour = EAT_TYPE_EAT_PERMANENT;
+    mEatBehavior = EAT_TYPE_DRINK;
 
     float zPositions[2] = {1500.0f, -2500.0f};
     mPos.z = zPositions[mAmiLayer];
@@ -191,11 +191,13 @@ void daEnHeiho_c::executeState_DieOther() {
     posMove();
 }
 
-void daEnHeiho_c::setDamage(dActor_c *actor) {
+bool daEnHeiho_c::setDamage(dActor_c *actor) {
     daPlBase_c *pl = (daPlBase_c *) actor;
-    if (pl->setDamage(this, daPlBase_c::DAMAGE_DEFAULT)) {
+    bool isDamage = pl->setDamage(this, daPlBase_c::DAMAGE_DEFAULT);
+    if (isDamage) {
         setTurnByPlayerHit(actor);
     }
+    return isDamage;
 }
 
 bool daEnHeiho_c::createIceActor() {

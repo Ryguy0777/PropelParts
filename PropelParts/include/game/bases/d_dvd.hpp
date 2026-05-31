@@ -9,7 +9,7 @@ public:
     virtual ~loader_c();
     virtual void freeHeap();
 
-    void *request(const char *, unsigned char, EGG::Heap *);
+    void *request(const char *name, u8 allocDirection, EGG::Heap *heap);
     bool freeResouce();
 
 private:

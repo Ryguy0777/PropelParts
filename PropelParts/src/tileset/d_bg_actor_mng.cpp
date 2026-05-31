@@ -227,7 +227,7 @@ GXColor GetRailColor(daUnitRail_c *rail, GXColor originalColor) {
     u8 slot = rail->mParam >> 24;
 
     // Get override file (failsaves not needed)
-    char *tilesetName = dBgGlobal_c::ms_pInstance->getEnvironment(dScStage_c::m_instance->mCurrArea, slot);
+    char *tilesetName = dBgGlobal_c::ms_pInstance->getEnvironment(dScStage_c::m_instance->mCurrAreaNo, slot);
     ProfsBin_s *bin = (ProfsBin_s *)dResMng_c::m_instance->getResSilently(tilesetName, PROFDATA).ptr();
 
     // Go to color table
@@ -258,7 +258,7 @@ mVec2_c *GetRailTexScale(mVec2_c *originalScales, daUnitRail_c *rail) {
     u8 slot = rail->mParam >> 24;
 
     // Get override file (failsaves not needed)
-    char *tilesetName = dBgGlobal_c::ms_pInstance->getEnvironment(dScStage_c::m_instance->mCurrArea, slot);
+    char *tilesetName = dBgGlobal_c::ms_pInstance->getEnvironment(dScStage_c::m_instance->mCurrAreaNo, slot);
     ProfsBin_s *bin = (ProfsBin_s *)dResMng_c::m_instance->getResSilently(tilesetName, PROFDATA).ptr();
 
     // Go to scale table

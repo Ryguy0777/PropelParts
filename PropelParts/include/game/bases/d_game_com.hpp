@@ -3,6 +3,7 @@
 #include <nw4r/lyt.h>
 #include <game/mLib/m_3d.hpp>
 #include <game/mLib/m_vec.hpp>
+#include <game/sLib/s_RangeData.hpp>
 #include <game/bases/d_lyttextBox.hpp>
 
 /// @brief A collection of various functions used throughout the game.
@@ -14,8 +15,10 @@ namespace dGameCom {
     // Random Number Generation API //
     //////////////////////////////////
 
+    void initRandomSeed(); ///< Initializes the random seed used for randomness.
     u32 getRandomSeed(); ///< Gets a seed used for randomness.
     int rndInt(size_t max);
+    float rnd();
 
     ////////////////////
     // Game Pause API //
@@ -31,10 +34,16 @@ namespace dGameCom {
     };
 
     /// @brief Determines if gameplay is currently stopped for the specified reason(s).
-    /// @param flag The pause reasons. Value is a ::GAME_STOP_e.
+    /// @param flag The pause reasons. Value is a GAME_STOP_e.
     bool isGameStop(ulong flag);
     void clearGameStop(); ///< Resets the game stop state.
     void setGameStop();
+
+    //////////////////
+    // Language API //
+    //////////////////
+
+    u8 GetLanguageHBM();
 
     ////////////////////////
     // Model Lighting API //
@@ -78,6 +87,8 @@ namespace dGameCom {
     /// @param fukidashiAction The action prompt type to be hidden.
     void hideFukidashiForSession(int playerId, int fukidashiAction);
 
+    void FUN_800b37b0(int playerId, int fukidashiAction); ///< @unofficial
+
     ////////////////
     // Other APIs //
     ////////////////
@@ -87,11 +98,14 @@ namespace dGameCom {
     bool PlayerEnterCheck(int);
     void Player1upColor(LytTextBox_c *, int);
     void getGlbPosToLyt(mVec3_c &);
-    // bool someCheck(mVec3_c *a, sRangeDataF *b); ///< @unofficial
+    bool someCheck(mVec3_c *a, sRangeDataF *b); ///< @unofficial
 
     bool checkRectangleOverlap(mVec3_c *, mVec3_c *, mVec3_c *, mVec3_c *, float); ///< @unofficial
 
-    void updateSelectCursor(nw4r::lyt::Picture *pic, int index, bool useSpecialDraw); ///< @unofficial
+    void SelectCursorSetup();
+    void SelectCursorSetup(nw4r::lyt::Pane *pane, int index, bool useSpecialDraw);
+
+    void WindowPaneColorSet(nw4r::lyt::Window *, int);
     float getDispCenterY();
 
     void DispSizeScale(nw4r::math::VEC2 &scale);
@@ -100,9 +114,6 @@ namespace dGameCom {
     void LayoutDispNumberDigit(const int &value, LytTextBox_c *textBox, bool fillWidth);
 
     bool isNowCourseClear();
-    void SelectCursorSetup();
-    void SelectCursorSetup(nw4r::lyt::Pane *, int, bool);
-    void WindowPaneColorSet(nw4r::lyt::Window *, int);
 
     void initGame();
 

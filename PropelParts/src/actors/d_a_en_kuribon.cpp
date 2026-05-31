@@ -31,7 +31,7 @@ bool daEnKuribon_c::isSpinLiftUpEnable() {
 }
 
 void daEnKuribon_c::setSpinLiftUpActor(dActor_c *carryingActor) {
-    mCarryID = *carryingActor->getPlrNo();
+    mCarryID = carryingActor->getPlrNo();
     mCarryPos.set(0.0f, 0.0f, 0.0f);
     changeState(StateID_Carry);
 }
@@ -68,7 +68,7 @@ void daEnKuribon_c::Normal_VsPlHitCheck(dCc_c *self, dCc_c *other) {
         return;
     }
     u8 newDir = self->mCollOffsetX[0] >= 0.0f ? 0 : 1;
-    u8 plrNo = *pl->getPlrNo();
+    u8 plrNo = pl->getPlrNo();
     if (isState(StateID_Dizzy)) {
         if (carry_check(pl)) {
             mCarryID = plrNo;
@@ -79,7 +79,7 @@ void daEnKuribon_c::Normal_VsPlHitCheck(dCc_c *self, dCc_c *other) {
             mNoHitPlayer.mTimer[plrNo] = 32;
             playKickSound(plrNo);
             mPlayerNo = plrNo;
-            mBc.mOwningPlayerNo = plrNo;
+            mBc.mOwningPlrNo = plrNo;
             changeState(StateID_Kick);
         }
     } else if (isState(StateID_Throw) || isState(StateID_Kick)) {
@@ -87,7 +87,7 @@ void daEnKuribon_c::Normal_VsPlHitCheck(dCc_c *self, dCc_c *other) {
         mNoHitPlayer.mTimer[plrNo] = 32;
         playKickSound(plrNo);
         mPlayerNo = plrNo;
-        mBc.mOwningPlayerNo = plrNo;
+        mBc.mOwningPlrNo = plrNo;
         changeState(StateID_Kick);
     } else {
         int checkRes = Enfumi_check(self, other, 0);
@@ -97,7 +97,7 @@ void daEnKuribon_c::Normal_VsPlHitCheck(dCc_c *self, dCc_c *other) {
             }
         } else if (checkRes == 1) {
             mPlayerNo = plrNo;
-            mBc.mOwningPlayerNo = plrNo;
+            mBc.mOwningPlrNo = plrNo;
             if (isState(StateID_Carry)) {
                 changeState(StateID_Kick);
             } else {
@@ -112,14 +112,14 @@ void daEnKuribon_c::Normal_VsPlHitCheck(dCc_c *self, dCc_c *other) {
 void daEnKuribon_c::Normal_VsYoshiHitCheck(dCc_c *self, dCc_c *other) {
     daYoshi_c *ys = (daYoshi_c *) other->mpOwner;
     u8 newDir = self->mCollOffsetX[2] >= 0.0f ? 0 : 1;
-    u8 plrNo = *ys->getPlrNo();
+    u8 plrNo = ys->getPlrNo();
     if (Enfumi_check(self, other, 0) == 0) {
         if (isState(StateID_Dizzy) || isState(StateID_Throw) || isState(StateID_Kick)) {
             if (plrNo < PLAYER_COUNT) {
                 mDirection = newDir;
                 mPlayerNo = plrNo;
                 mNoHitPlayer.mTimer[plrNo] = 32;
-                mBc.mOwningPlayerNo = plrNo;
+                mBc.mOwningPlrNo = plrNo;
                 playKickSound(plrNo);
                 changeState(StateID_Kick);
             }
@@ -206,14 +206,14 @@ void daEnKuribon_c::updateCarryCc() {
         v1.z
     );
 
-    mCc.mCcData.mOffset.set(mCcOffsetX, mCcOffsetY);
-    mCc.mCcData.mSize.set(mCcWidth, mCcHeight);
+    mCc.mCcData.mBase.mOffset.set(mCcOffsetX, mCcOffsetY);
+    mCc.mCcData.mBase.mSize.set(mCcWidth, mCcHeight);
     float f = 0.0f;
     if (dBc_c::checkWall(&v1, &v2, &f, mLayer, 1, nullptr)) {
         float f1 = (v1.x + f) * 0.5f;
         float f2 = (v1.x - f) * 0.5f;
-        mCc.mCcData.mOffset.set(f1 - mPos.x, 8.0f);
-        mCc.mCcData.mSize.set(std::fabs(f2), 8.0f);
+        mCc.mCcData.mBase.mOffset.set(f1 - mPos.x, 8.0f);
+        mCc.mCcData.mBase.mSize.set(std::fabs(f2), 8.0f);
     }
 }
 
@@ -227,7 +227,7 @@ void daEnKuribon_c::setDeathInfo_Carry(dActor_c *killedBy) {
         -1,
         -1,
         mDirection,
-        (u8) *killedBy->getPlrNo()
+        (u8) killedBy->getPlrNo()
     };
     mDeathInfo = deathInfo;
 }
@@ -289,10 +289,10 @@ void daEnKuribon_c::initializeState_Carry() {
     dAcPy_c *player = daPyMng_c::getPlayer(mCarryID);
     mAmiLayer = player->mAmiLayer;
 
-    mCcOffsetX = mCc.mCcData.mOffset.x;
-    mCcOffsetY = mCc.mCcData.mOffset.y;
-    mCcWidth = mCc.mCcData.mSize.x;
-    mCcHeight = mCc.mCcData.mSize.y;
+    mCcOffsetX = mCc.mCcData.mBase.mOffset.x;
+    mCcOffsetY = mCc.mCcData.mBase.mOffset.y;
+    mCcWidth = mCc.mCcData.mBase.mSize.x;
+    mCcHeight = mCc.mCcData.mBase.mSize.y;
     mCc.mAmiLine = l_Ami_Line[mAmiLayer];
     mBc.mAmiLine = l_Ami_Line[mAmiLayer];
     mCc.mCcData.mVsKind |= BIT_FLAG(CC_KIND_KILLER) | BIT_FLAG(CC_KIND_BALLOON);
@@ -307,8 +307,8 @@ void daEnKuribon_c::finalizeState_Carry() {
     player->cancelCarry(this);
     mCc.mCcData.mVsKind &= ~BIT_FLAG(CC_KIND_KILLER);
     mCc.mCcData.mAttack = CC_ATTACK_NONE;
-    mCc.mCcData.mOffset.set(mCcOffsetX, mCcOffsetY);
-    mCc.mCcData.mSize.set(mCcWidth, mCcHeight);
+    mCc.mCcData.mBase.mOffset.set(mCcOffsetX, mCcOffsetY);
+    mCc.mCcData.mBase.mSize.set(mCcWidth, mCcHeight);
     mRc.setRide(nullptr);
     mBc.mFlags = 0;
     mCarryingFlags &= ~(CARRY_RELEASE | CARRY_THROW);

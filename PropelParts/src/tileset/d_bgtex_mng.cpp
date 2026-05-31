@@ -49,7 +49,7 @@ kmCallDefCpp(0x80087840, void, dBgTexMng_c *mng, int slot, u16 tileNum, char *na
     mng->setupAnimTile(slot, tileNum, name, pFrameTimes, reverse);
 
     // Get current area
-    int area = dScStage_c::m_instance->mCurrArea;
+    int area = dScStage_c::m_instance->mCurrAreaNo;
 
     // Process every slot
     for (slot = 0; slot < 4; slot++) {

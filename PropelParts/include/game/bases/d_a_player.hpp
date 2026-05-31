@@ -184,7 +184,7 @@ public:
     virtual void executeMain();
     virtual void executeLastPlayer();
     virtual void executeLastAll();
-    virtual bool isItemKinopio();
+    virtual bool isItemKinopio() { return mIsRescueKinopio; }
     virtual void setPowerup(PLAYER_POWERUP_e, int);
     virtual u8 getTallType(s8);
     virtual const sBcPointData *getHeadBgPointData() { return &getBgPointData()->mHead; }
@@ -714,7 +714,8 @@ public:
     }
     PLAYER_POWERUP_e getPowerupCopy() { return mPowerupCopy; }
     bool isClimbing() {
-        return isStatus(STATUS_36) ||
+        return
+            isStatus(STATUS_TARZAN_ROPE) ||
             isStatus(STATUS_VINE) ||
             isStatus(STATUS_HANG) ||
             isStatus(STATUS_KANI_HANG) ||
@@ -809,7 +810,7 @@ public:
     u8 mPad2[0x4];
     float mSpinHoldReqTarget; ///< The target X position to move to while doing a spin in place.
     u32 mSpinFireBallCooldown; ///< Timer to control how often fireballs the player automatically shoots while spinning.
-    u32 m_1058;
+    u32 mStartSpinCooldown; ///< Timer to disable spin jumps and propeller spins while active.
     s16 m_105c;
     dEf::followEffect_c mFollowEf2;
     dEf::followEffect_c mFollowEf3;

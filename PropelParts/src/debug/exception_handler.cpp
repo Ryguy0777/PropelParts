@@ -1,7 +1,7 @@
 #include <kamek.h>
 #include <game/bases/d_game_key.hpp>
 #include <revolution/WPAD.h>
-#include <nw4r/db/exception.h>
+#include <nw4r/db.h>
 #include <game_versions_nsmbw.h>
 
 #define GAME_NAME "PropelParts"
@@ -72,7 +72,6 @@ kmBranchDefCpp(0x80234CA0, NULL, void, u16 OSError, OSContext *osContext, u32 ds
     }
 
     // Stack trace
-    // nw4r::db::Exception_Printf_("\nException info trace (most recent on top):\n");
     int i = 0;
     u32 *stackPointer = (u32 *)((char *)nw4r::db::sException + 0x33C);
     do {

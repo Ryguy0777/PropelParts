@@ -20,7 +20,7 @@ public:
 
     virtual void beginFunsui();
     virtual void endFunsui();
-    virtual void isFunsui() const;
+    virtual BOOL isFunsui() const;
 
     // daEnKuriboBase_c overrides
     virtual void calcModel();

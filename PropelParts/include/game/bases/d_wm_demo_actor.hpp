@@ -3,22 +3,24 @@
 #include <game/bases/d_wm_actor.hpp>
 #include <game/bases/d_wm_sv_mdl.hpp>
 
+/// @brief The minimum required implementation for world map event-driven actors.
 /// @ingroup bases
 class dWmDemoActor_c : public dWmActor_c {
 public:
-    dWmDemoActor_c();
+    dWmDemoActor_c(); ///< @copydoc dWmActor_c::dWmActor_c
 
-    ~dWmDemoActor_c() {}
-
-    static dBaseActor_c *GetChildDemoActor(dBaseActor_c *prev, dWmDemoActor_c *&next); ///< @unofficial
-
+    virtual ~dWmDemoActor_c() {} ///< @copydoc dWmActor_c::~dWmActor_c
     virtual int create() { return SUCCEEDED; }
     virtual int draw() { return SUCCEEDED; }
     virtual int doDelete() { return SUCCEEDED; }
     virtual int execute() = 0;
     virtual int GetActorType() { return ACTOR_MAP_DEMO; }
 
-    virtual void setCutEndSpecific(int cutsceneId, bool param2); ///< @unofficial
+    /// @brief Contains the actor-specific logic for processing the current world map cutscene.
+    /// @param cutsceneCommandId The cutscene type.
+    /// @param isFirstFrame @p true on the first frame the cutscene is executing, @p false on subsequent frames.
+    /// @unofficial
+    virtual void processCutsceneCommand(int cutsceneCommandId, bool isFirstFrame);
     virtual bool checkCutEnd() { return mIsCutEnd; }
     virtual void setCutEnd() { mIsCutEnd = true; }
     virtual void clearCutEnd() { mIsCutEnd = false; }
@@ -49,7 +51,9 @@ public:
     void CsSPosSimple(int directionType, float yTarget);
     void clearSpeedAll();
     void adjustHeightBase(const mVec3_c &startPos, const mVec3_c &targetPos, int directionType);
-    bool isCutscenePlaying(const int *csList, int csCount); ///< @unofficial
+    bool isCutsceneCommandPlaying(const int *cmdList, int cmdCount); ///< @unofficial
+
+    static dWmDemoActor_c *GetChildDemoActor(dBaseActor_c *prev, dWmDemoActor_c *&next); ///< @unofficial
 
 protected:
     bool m_00;

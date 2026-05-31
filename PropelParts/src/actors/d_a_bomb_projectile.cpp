@@ -29,8 +29,8 @@ void BombProjectileCollcheck(dCc_c *self, dCc_c *other) {
                 // If we're colliding with yoshi's tounge
                 bomb->mStateMgr.changeState(daBombProjectile_c::StateID_EatWait);
             } else {
-                s8 *playerNum = ac->getPlrNo();
-                if (*playerNum > -1) {
+                s8 playerNum = ac->getPlrNo();
+                if (playerNum > -1) {
                     // Yoshi has a player on him
                     bomb->mStateMgr.changeState(daBombProjectile_c::StateID_Explode);
                 }
@@ -50,8 +50,8 @@ void BombExplosionCollcheck(dCc_c *self, dCc_c *other) {
             pl->setDamage(bomb, daPlBase_c::DAMAGE_DEFAULT);
         } else if (otherKind == dActor_c::STAGE_ACTOR_YOSHI) {
             daYoshi_c *ys = (daYoshi_c *)other->mpOwner;
-            s8 *playerNum = ys->getPlrNo();
-            if (*playerNum > -1) {
+            s8 playerNum = ys->getPlrNo();
+            if (playerNum > -1) {
                 ys->setDamage(bomb, daPlBase_c::DAMAGE_DEFAULT);
             }
         }
@@ -67,13 +67,13 @@ STATE_DEFINE(daBombProjectile_c, Explode);
 
 dCustomProfile_c l_BROS_BOMB_profile(&g_profile_BROS_BOMB, "BROS_BOMB", fProfile::BROS_BOMB);
 
-const sBcSensorPoint l_bombproj_head = { 0, 0x0, 0x10000 };
-const sBcSensorLine l_bombproj_foot = { 1, -0x3000, 0x3000, 0 };
-const sBcSensorPoint l_bombproj_wall = { 0, 0x6000, 0x6000 };
+const sBcSensorPoint l_bombproj_head = { SENSOR_IS_POINT, 0x0, 0x10000 };
+const sBcSensorLine l_bombproj_foot = { SENSOR_IS_LINE, -0x3000, 0x3000, 0 };
+const sBcSensorPoint l_bombproj_wall = { SENSOR_IS_POINT, 0x6000, 0x6000 };
 
 const sCcDatNewF l_bombproj_cc = {
-    {0.0f, 8.0f},
-    {8.0f, 8.0f},
+    0.0f, 8.0f,
+    8.0f, 8.0f,
     CC_KIND_ENEMY,
     CC_ATTACK_NONE,
     BIT_FLAG(CC_KIND_PLAYER) | BIT_FLAG(CC_KIND_PLAYER_ATTACK) | BIT_FLAG(CC_KIND_YOSHI) |
@@ -85,7 +85,7 @@ const sCcDatNewF l_bombproj_cc = {
 
 int daBombProjectile_c::create() {
     // Setup model
-    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[0], nullptr, 0x20);
+    mAllocator.createFrmHeap(-1, mHeap::g_gameHeaps[mHeap::GAME_HEAP_DEFAULT], nullptr, 0x20);
 
     mRes = dResMng_c::m_instance->getRes("bros_bombhei", "g3d/bros_bombhei.brres");
     mResMdl = mRes.GetResMdl("bombhei");
@@ -113,7 +113,7 @@ int daBombProjectile_c::create() {
     mVisibleAreaOffset.set(0.0f, 8.0f);
 
     // Set yoshi eating behavior
-    mEatBehaviour = EAT_TYPE_EAT;
+    mEatBehavior = EAT_TYPE_EAT;
 
     // Tile sensors
     mBc.set(this, l_bombproj_foot, l_bombproj_head, l_bombproj_wall);
@@ -314,7 +314,7 @@ void daBombProjectile_c::executeState_Throw() {
     // Effect and sound
     mIgniteEffect.createEffect("Wm_en_bombignition", 0, &mRootPos, nullptr, nullptr);
     mVec2_c soundPos = dAudio::cvtSndObjctPos(mPos);
-    dAudio::g_pSndObjEmy->holdSound(SE_EMY_BH_HIBANA, mUniqueID, soundPos, 0);
+    dAudio::SoundEffectID_t(SE_EMY_BH_HIBANA).holdEmySound(mUniqueID, mPos, 0);
 
     // Explode after a while
     if (mAnmClr.isStop(0)) {
@@ -331,8 +331,8 @@ void daBombProjectile_c::executeState_Throw() {
 }
 
 const sCcDatNewF l_explode_cc = {
-    {0.0f, 8.0f},
-    {18.0f, 18.0f},
+    0.0f, 8.0f,
+    18.0f, 18.0f,
     CC_KIND_ENEMY,
     CC_ATTACK_SHELL,
     BIT_FLAG(CC_KIND_PLAYER) | BIT_FLAG(CC_KIND_PLAYER_ATTACK) | BIT_FLAG(CC_KIND_YOSHI) |
