@@ -10,7 +10,14 @@
 #include <game_versions_nsmbw.h>
 #include <propelparts/bases/d_debug_config.hpp>
 
-extern void *bc_vtable;
+// Patches to allow tracking instances of dBc_c
+static dBc_c* firstBc = NULL;
+static dBc_c* lastBc = NULL;
+
+extern "C" {
+void addBcToList(dBc_c* self);
+void removeBcFromList(dBc_c* self);
+}
 
 // Drawing helper functions
 void DrawPoint(float x, float y, float z, u8 r, u8 g, u8 b, u8 a) {
@@ -180,8 +187,7 @@ dCollisionRender_c::dCollisionRender_c() {
 }
 
 // Dummy function
-void dCollisionRender_c::drawOpa() {
-}
+void dCollisionRender_c::drawOpa() {}
 
 // Actual drawing
 void dCollisionRender_c::drawXlu() {
@@ -247,11 +253,9 @@ void dCollisionRender_c::drawXlu() {
                 u8 collType = currCc->mShape;
 
                 // Call DrawCircle for circles
-                if (collType == CC_SHAPE_CIRCLE)
+                if (collType == CC_SHAPE_CIRCLE) {
                     DrawCircle(centreX, centreY, edgeDistX, edgeDistY, 9000.0f, r, g, b, a);
-
-                // Else call DrawQuad
-                else {
+                } else { // Else call DrawQuad
                     float tlX, tlY, trX, trY, blX, blY, brX, brY;
                     bool addDiagonal = true;
 
@@ -306,11 +310,9 @@ void dCollisionRender_c::drawXlu() {
             u8 a = 0xFF;
 
             // If round, draw a circle
-            if (currBgCtr->mIsRound)
+            if (currBgCtr->mIsRound) {
                 DrawCircle(currBgCtr->mLastPos.x, currBgCtr->mLastPos.y, currBgCtr->mRadius, currBgCtr->mRadius, 9000.0f, r, g, b, a);
-
-            // Else draw a quad
-            else {
+            } else { // Else draw a quad
                 float tlX = currBgCtr->mCalcedPos[0].x;
                 float tlY = currBgCtr->mCalcedPos[0].y;
                 float trX = currBgCtr->mCalcedPos[3].x;
@@ -328,26 +330,19 @@ void dCollisionRender_c::drawXlu() {
 
     // Draw all instances of dBc_c
     if (flags & (1 << ColliderDisplayFlags::Sensors)) {
-        dActor_c *owner = nullptr;
-        while (owner = (dActor_c*)fManager_c::searchBaseByGroupType(2, owner)) {
-            // Verify if dBc_c vtable is set
-            u8 *vtablePtr = ((u8*)owner) + 0x1EC;
-                if ((void*)*((u32*)vtablePtr) != &bc_vtable)
-                    continue;
+        dBc_c* currBc = firstBc;
+        while (currBc) {
 
             // Get the color
-            u32 uptr = (u32)owner;
+            u32 uptr = (u32)currBc;
             u8 r = (uptr >> 16) + 0x20;
             u8 g = (uptr >> 8) + 0x30;
             u8 b = (uptr & 0xFF) + 0x80;
             u8 a = 0xFF;
 
-            // Grab dBc_c pointer
-            dBc_c *currBc = &owner->mBc;
-
             // Get the actor's position
-            float ownerPosX = owner->mPos.x;
-            float ownerPosY = owner->mPos.y;
+            float ownerPosX = currBc->mpOwnerPos->x;
+            float ownerPosY = currBc->mpOwnerPos->y;
 
             // Make an array of sensors
             sBcSensorIf_c *sensors[4] = {currBc->mpSensorFoot, currBc->mpSensorHead, currBc->mpSensorWall, currBc->mpSensorWall};
@@ -357,12 +352,15 @@ void dCollisionRender_c::drawXlu() {
 
                 // Check if the sensor exists
                 sBcSensorIf_c *sensor = sensors[i];
-                if (sensor == nullptr)
+                if (sensor == nullptr) {
                     continue;
+                }
 
                 // Multiplier for the adjacent sensors
                 int mult = (i == 3) ? -1 : 1;
                 float x1, y1, x2, y2;
+
+                // sBcPointData is probably the wrong thing to typecast to but I don't really care
                 bool isLine = ((sBcPointData *)sensor)->mFlags & 1;
 
                 if (isLine == false) {
@@ -391,6 +389,9 @@ void dCollisionRender_c::drawXlu() {
                     DrawLine(x1, y1, x2, y2, 8005.0f, r, g, b, a);
                 }
             }
+
+            // Repurpose the (otherwise unused) vtable pointer as a pointer to the next dBc_c instance
+            currBc = *(dBc_c **)currBc;
         }
     }
 
@@ -406,11 +407,9 @@ void dCollisionRender_c::drawXlu() {
             u8 a = 0xFF;
 
             // For dRide2Point and dRideRoll, draw a simple line
-            if (currRide->mType <= 2)
+            if (currRide->mType <= 2) {
                 DrawLine(currRide->mLeft.x, currRide->mLeft.y, currRide->mRight.x, currRide->mRight.y, 9000.0f, r, g, b, a);
-
-            // dRideCircle is a little bit more complex
-            else {
+            } else { // dRideCircle is a little bit more complex
                 dRideCircle_c* currCircle = (dRideCircle_c*)currRide;
 
                 // Get centre and radius
@@ -419,11 +418,9 @@ void dCollisionRender_c::drawXlu() {
                 float radius = currCircle->mRadius;
 
                 // If the circle is full, use the regular circle method
-                if (currCircle->mLeftAngleOffset + currCircle->mRightAngleOffset == 0x10000)
+                if (currCircle->mLeftAngleOffset + currCircle->mRightAngleOffset == 0x10000) {
                     DrawCircle(centreX, centreY, radius, radius, 9000.0f, r, g, b, a);
-
-                // Else draw a partial circle
-                else {
+                } else { // Else draw a partial circle
                     u16 minAngle = currCircle->mRotation - currCircle->mRightAngleOffset;
                     u16 maxAngle = minAngle + currCircle->mLeftAngleOffset;
                     DrawPartialCircle(centreX, centreY, radius, 9000.0f, minAngle, maxAngle, r, g, b, a);
@@ -433,4 +430,105 @@ void dCollisionRender_c::drawXlu() {
             currRide = currRide->mpNext;
         }
     }
+}
+
+// Patches to allow tracking instances of dBc_c
+void addBcToList(dBc_c* self) {
+
+    // If the bc was already initialized, bail
+    if (*(dBc_c **)self || lastBc == self) {
+        return;
+    }
+
+    // If first is NULL, set this bc as both first and last
+    if (firstBc == NULL) {
+        firstBc = self;
+        lastBc = self;
+
+    // Else set the next field of the previous one, and set this one as last
+    } else {
+        *(dBc_c **)lastBc = self;
+        lastBc = self;
+    }
+}
+
+void removeBcFromList(dBc_c* self) {
+
+    // If no bcs are initialized, bail
+    if (!firstBc) {
+        return;
+    }
+
+    // If this bc has no "next" and isn't the last bc it was never initialized, so bail
+    if (!*(dBc_c **)self && lastBc != self) {
+        return;
+    }
+
+    // If this bc is the only initialized one, set both first and last to NULL
+    if (firstBc == lastBc) {
+        firstBc = NULL;
+        lastBc = NULL;
+        return;
+    }
+
+    // If this bc is the first one, set the next one as the first one
+    if (firstBc == self) {
+        firstBc = *(dBc_c **)self;
+        return;
+    }
+
+    // Find the previous bc
+    dBc_c* prevBc = firstBc;
+    while (*(dBc_c **)prevBc != self) {
+        prevBc = *(dBc_c **)prevBc;
+    }
+
+    // Remove this bc from the list
+    *(dBc_c **)prevBc = *(dBc_c **)self;
+
+    // If this was the last bc, set the previous one as the new last
+    if (lastBc == self) {
+        lastBc = prevBc;
+    }
+}
+
+// Initialize "next" field to NULL
+kmWrite32(0x8006CF50, 0x38800000);
+
+// Add instance to the linked list once initialized
+kmCallDefAsm(0x8006D104) {
+
+    // No stack saving needed
+    nofralloc
+
+    // Original instruction
+    stw r0, 0xE8(r30)
+
+    // Call CPP function
+    mr r3, r30
+    b addBcToList
+}
+
+// Remove instance from the linked list when destroyed
+kmCallDefAsm(0x8006CFBC) {
+
+    // Push stack manually
+    stwu r1, -0x10(r1)
+    mflr r0
+    stw r0, 0x14(r1)
+    stw r4, 0xC(r1)
+
+    // Call CPP function
+    bl removeBcFromList
+
+    // Pop stack manually
+    lwz r4, 0xC(r1)
+    lwz r0, 0x14(r1)
+    mtlr r0
+    addi r1, r1, 0x10
+
+    // Restore registers
+    mr r3, r31
+    cmpwi r4, 0
+    blr
 }

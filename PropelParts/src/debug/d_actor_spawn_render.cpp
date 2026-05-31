@@ -48,8 +48,7 @@ dActorSpawnRender_c::dActorSpawnRender_c() {
 }
 
 // Dummy function
-void dActorSpawnRender_c::drawOpa() {
-}
+void dActorSpawnRender_c::drawOpa() {}
 
 extern dActorData_c l_custom_actor_data_tbl[];
 

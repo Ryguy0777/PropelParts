@@ -5,8 +5,9 @@
 
 void printActorInfo(u16 profId, void *parent, ulong settings, int group) {
     char *profName = dProf_getName(profId);
-	if (dDebugConfig_c::m_instance->mActorLog)
-    	OSReport("I: %04d, P:%p S:%08x T:%d N:%s\n", profId, parent, settings, group, profName);
+	if (dDebugConfig_c::m_instance->mActorLog) {
+    	OSReport("I:%04d, P:%p S:%08x T:%d N:%s\n", profId, parent, settings, group, profName);
+	}
     return;
 }
 
