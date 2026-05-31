@@ -16,8 +16,8 @@ const float daEnLargeKabochan_c::smc_WALK_SPEED = 0.5f;
 const float daEnLargeKabochan_c::smc_WALK_SPEED_CRACK = 0.75f;
 const float daEnLargeKabochan_c::smc_WALK_SPEED_CRACK2 = 1.0f;
 
-const sBcSensorLine l_large_kabochan_foot = { 1, -0x10000, 0x10000, 0 };
-const sBcSensorLine l_large_kabochan_wall = { 1, 0x14000, 0x0A000, 0x14000 };
+const sBcSensorLine l_large_kabochan_foot = { SENSOR_IS_LINE, -0x10000, 0x10000, 0 };
+const sBcSensorLine l_large_kabochan_wall = { SENSOR_IS_LINE, 0x14000, 0x0A000, 0x14000 };
 
 bool daEnLargeKabochan_c::hitCallback_HipAttk(dCc_c *self, dCc_c *other) {
     daPlBase_c *player = (daPlBase_c *)other->mpOwner;

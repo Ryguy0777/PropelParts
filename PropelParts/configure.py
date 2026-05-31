@@ -402,8 +402,8 @@ def make_ninja_file(config: Config) -> str:
     lines.append(f'mwcceppc = {ninja_escape(config.mwcceppc_exe)}')
     lines.append(f'mwasmeppc = {ninja_escape(config.mwasmeppc_exe)}')
     cw_wrapper = Path(__file__).parent / CW_WRAPPER_SCRIPT_NAME
-    lines.append(f'cc = {ninja_escape(sys.executable)} {quote}{ninja_escape(cw_wrapper)}{quote} {quote}$mwcceppc{quote}')
-    lines.append(f'as = {ninja_escape(sys.executable)} {quote}{ninja_escape(cw_wrapper)}{quote} {quote}$mwasmeppc{quote}')
+    lines.append(f'cc = {quote}{ninja_escape(sys.executable)}{quote} {quote}{ninja_escape(cw_wrapper)}{quote} {quote}$mwcceppc{quote}')
+    lines.append(f'as = {quote}{ninja_escape(sys.executable)}{quote} {quote}{ninja_escape(cw_wrapper)}{quote} {quote}$mwasmeppc{quote}')
     lines.append(f'kamek = {ninja_escape(config.kamek_exe)}')
     lines.append(f'kstdlib = {ninja_escape(config.k_stdlib_dir)}')
     if use_addrmap:

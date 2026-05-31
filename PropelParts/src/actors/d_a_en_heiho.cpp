@@ -20,9 +20,9 @@ dCustomProfile_c l_HEIHO_profile(&g_profile_EN_HEIHO, "EN_HEIHO", CourseActor::E
 
 const float daEnHeiho_c::smc_WALK_SPEED = 0.6f;
 
-const sBcSensorPoint l_heiho_head = { 0, 0x0, 0x14000 };
-const sBcSensorLine l_heiho_foot = { 1, -0x4000, 0x4000, 0 };
-const sBcSensorLine l_heiho_wall = { 1, 0x3000, 0x8000, 0x8000 };
+const sBcSensorPoint l_heiho_head = { SENSOR_IS_POINT, 0x0, 0x14000 };
+const sBcSensorLine l_heiho_foot = { SENSOR_IS_LINE, -0x4000, 0x4000, 0 };
+const sBcSensorLine l_heiho_wall = { SENSOR_IS_LINE, 0x3000, 0x8000, 0x8000 };
 
 const sCcDatNewF l_heiho_cc = {
     0.0f, 10.0f,
@@ -70,9 +70,6 @@ int daEnHeiho_c::create() {
     // Set size for model culling
     mVisibleAreaSize.set(16.0f, 24.0f);
     mVisibleAreaOffset.set(0.0f, 12.0f);
-
-    // Set yoshi eating behavior
-    mEatBehavior = EAT_TYPE_DRINK;
 
     float zPositions[2] = {1500.0f, -2500.0f};
     mPos.z = zPositions[mAmiLayer];

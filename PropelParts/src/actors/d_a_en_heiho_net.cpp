@@ -25,9 +25,9 @@ const mVec2_c l_heiho_net_offset_UD[] = { mVec2_c(0.0, -2.0), mVec2_c(0.0, -14.0
 const mVec2_c l_heiho_net_offset_LR[] = { mVec2_c(8.0, 0.0), mVec2_c(-8.0, 0.0) };
 const m3d::playMode_e l_heiho_net_playmode[] = { m3d::FORWARD_LOOP, m3d::REVERSE_LOOP };
 
-const sBcSensorPoint l_heiho_net_head = { 0, 0x0, 0x14000 };
-const sBcSensorLine l_heiho_net_foot = { 1, -0x4000, 0x4000, 0 };
-const sBcSensorLine l_heiho_net_wall = { 1, 0x3000, 0x8000, 0x8000 };
+const sBcSensorPoint l_heiho_net_head = { SENSOR_IS_POINT, 0x0, 0x14000 };
+const sBcSensorLine l_heiho_net_foot = { SENSOR_IS_LINE, -0x4000, 0x4000, 0 };
+const sBcSensorLine l_heiho_net_wall = { SENSOR_IS_LINE, 0x3000, 0x8000, 0x8000 };
 
 const sCcDatNewF l_heiho_net_cc = {
     0.0f, 10.0f,
@@ -80,9 +80,6 @@ int daEnHeihoNet_c::create() {
     // Set size for model culling
     mVisibleAreaSize.set(16.0f, 24.0f);
     mVisibleAreaOffset.set(0.0f, 12.0f);
-
-    // Set yoshi eating behavior
-    mEatBehavior = EAT_TYPE_DRINK;
 
     mIceMng.setIceStatus(0, 3, 3);
 
@@ -282,7 +279,7 @@ bool daEnHeihoNet_c::isPlayerInAttackRange() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         dAcPy_c *player = daPyMng_c::getPlayer(i);
         if (player) {
-            if (player->mAmiLayer != mAmiLayer) {
+            if (player->mAmiLayer-1 != mAmiLayer) {
                 if ((8.0f >= abs(player->mPos.x - mPos.x)) && (8.0f >= abs(player->mPos.y - mPos.y))) {
                     return true;
                 }
@@ -296,7 +293,7 @@ void daEnHeihoNet_c::attackPlayer() {
     for (int i = 0; i < PLAYER_COUNT; i++) {
         dAcPy_c *player = daPyMng_c::getPlayer(i);
         if (player) {
-            if (player->mAmiLayer != mAmiLayer) {
+            if (player->mAmiLayer-1 != mAmiLayer) {
                 if ((16.0f >= abs(player->mPos.x - mPos.x)) && (16.0f >= abs(player->mPos.y - mPos.y))) {
                     setDamage(player);
                 }

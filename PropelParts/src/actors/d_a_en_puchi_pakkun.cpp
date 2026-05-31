@@ -26,9 +26,9 @@ const s16 l_nipper_turn_angleY[] = { 0x3999, -0x3999 };
 
 const float daEnPuchiPakkun_c::smc_WALK_SPEED = 0.5f;
 
-const sBcSensorPoint l_nipper_head = { 0, 0x0, 0x10000 };
-const sBcSensorLine l_nipper_foot = { 1, -0x4000, 0x4000, 0 };
-const sBcSensorLine l_nipper_wall = { 1, 0x3000, 0x8000, 0x8000 };
+const sBcSensorPoint l_nipper_head = { SENSOR_IS_POINT, 0x0, 0x10000 };
+const sBcSensorLine l_nipper_foot = { SENSOR_IS_LINE, -0x4000, 0x4000, 0 };
+const sBcSensorLine l_nipper_wall = { SENSOR_IS_LINE, 0x3000, 0x8000, 0x8000 };
 
 const sCcDatNewF l_nipper_cc = {
     0.0f, 8.0f,
