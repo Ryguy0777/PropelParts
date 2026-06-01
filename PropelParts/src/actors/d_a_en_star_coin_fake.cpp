@@ -53,9 +53,9 @@ int daEnStarCoinFake_c::create() {
 int daEnStarCoinFake_c::execute() {
     mStateMgr.executeState();
     if (!mRotateX) {
-        mAngle.y = -dCoin_c::getShapeAngle().y;
+        mAngle.y = -dCoin_c::getRealShapeAngle().y;
     } else {
-        mAngle.x = -dCoin_c::getShapeAngle().y;
+        mAngle.x = -dCoin_c::getRealShapeAngle().y;
     }
 
     return SUCCEEDED;
