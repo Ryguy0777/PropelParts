@@ -42,3 +42,5 @@
 // file containing that particular bugfix, to indicate that it should be
 // compiled separately for different versions (once for E2, and once for
 // everything else).
+
+#define NSMBWUP_C00801_OFF

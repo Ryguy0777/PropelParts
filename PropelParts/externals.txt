@@ -1,3 +1,11 @@
+GabonRock_CrushState=0x80998CB0
+
+CheckFireBallLimit__19daFireBall_Player_cFii=0x8011b060
+
+smc_THROW_SPEED__10daHammer_c=0x80937338
+smc_THROW_SPEED_MAX__10daHammer_c=0x80937340
+smc_THROW_ANGLE__10daHammer_c=0x80937304
+
 vf58__12dPlayerMdl_cFv=0x800d4150
 setCurrentModel__12dPlayerMdl_cFQ212dPlayerMdl_c7MODEL_e=0x800d4750
 
