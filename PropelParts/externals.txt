@@ -1,5 +1,8 @@
+scBgPointData_Normal_=0x802F5580
+
 GabonRock_CrushState=0x80998CB0
 
+CheckIceballLimit__11daIceBall_cFii=0x80124700
 CheckFireBallLimit__19daFireBall_Player_cFii=0x8011b060
 
 smc_THROW_SPEED__10daHammer_c=0x80937338

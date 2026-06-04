@@ -266,7 +266,7 @@ kmWritePointer(0x80afcb60, &daEnMistman_c__hitCallback_YoshiBullet);
 
 // EN_CHOROBON
 // This one is so stupid... hammers don't reflect after hitting fuzzies, making it possible to kill lines of fuzzies with hammers
-// This fixes that
+// This dumb hack makes hammers reflect after hitting fuzzies
 bool daEnChorobon_c__hitCallback_YoshiBullet(dEn_c *fuzzy, dCc_c *self, dCc_c *other) {
 	daHammer_c *hammer = (daHammer_c*)other->mpOwner;
 	hammer->hitProc_Reflect(self);

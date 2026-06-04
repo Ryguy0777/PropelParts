@@ -92,7 +92,9 @@ enum PLAYER_POWERUP_e {
     POWERUP_PROPELLER_SHROOM,
     POWERUP_PENGUIN_SUIT,
     POWERUP_ICE_FLOWER,
-    POWERUP_COUNT
+    POWERUP_COUNT,
+    POWERUP_HAMMER_SUIT = POWERUP_COUNT,
+    NEW_POWERUP_COUNT
 };
 
 /// @brief The numbers corresponding to each level type.
