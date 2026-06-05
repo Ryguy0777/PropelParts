@@ -368,3 +368,51 @@ kmCallDefAsm(0x80143884) {
 	add r7, r8, r0
 	blr
 }
+
+// Fix "Powerup get" sound
+kmBranchDefCpp(0x80141280, NULL, void, dAcPy_c *this_) {
+    this_->mChangeTimer = 30;
+    int prevTallType = this_->getTallType(this_->mPowerupCopy);
+    int currTallType = this_->getTallType(-1);
+    if (this_->isStatus(dAcPy_c::STATUS_HANG)) {
+        static const float offsets[3] = { 21.0f, 11.0f, 0.0f };
+        this_->mPos.y += offsets[currTallType] - offsets[prevTallType];
+    }
+    static const int tallTypeChange[3][3] = {
+        {7, 7, 1},
+        {2, 7, 3},
+        {4, 5, 6}
+    };
+    this_->m_67 = tallTypeChange[prevTallType][currTallType];
+    switch (this_->m_67) {
+        case 0:
+        case 1:
+        case 3:
+            if (this_->mPowerup == POWERUP_PROPELLER_SHROOM) {
+                this_->startSound(SE_PLY_CHANGE_PRPL, false);
+            } else if (this_->mPowerup == POWERUP_PENGUIN_SUIT) {
+                this_->startSound(SE_PLY_CHANGE_PNGN, false);
+            } else {
+                this_->startSound(SE_PLY_CHANGE_BIG, false);
+            }
+            break;
+        case 2:
+        case 4:
+            this_->startSound(SE_PLY_CHANGE_MAME, false);
+            break;
+        case 5:
+        case 6:
+            if (this_->mPowerup == POWERUP_PROPELLER_SHROOM) {
+                this_->startSound(SE_PLY_CHANGE_PRPL, false);
+            } else if (this_->mPowerup == POWERUP_PENGUIN_SUIT) {
+                this_->startSound(SE_PLY_CHANGE_PNGN, false);
+            } else if (this_->mPowerup == POWERUP_FIRE_FLOWER || this_->mPowerup == POWERUP_ICE_FLOWER) {
+                this_->startSound(SE_PLY_CHANGE_BIG, false);
+            } else if (this_->mPowerup == POWERUP_HAMMER_SUIT) {
+                this_->startSound(SE_PLY_CHANGE_BIG, false);
+            } else {
+                this_->startSound(SE_PLY_CHANGE_SMALL, false);
+            }
+            break;
+    }
+}

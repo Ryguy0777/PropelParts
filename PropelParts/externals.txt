@@ -1,3 +1,7 @@
+daEnItem_c__GetWhetherPlayerCanGetPowerupOrNot=0x80A2BE60
+
+fn_80145c00__7dAcPy_cF16PLAYER_POWERUP_e=0x80145c00
+
 scBgPointData_Normal_=0x802F5580
 
 GabonRock_CrushState=0x80998CB0

@@ -26,6 +26,7 @@ const char *crsinLoadNames[] = {
     "I_propeller",
     "I_penguin",
     "I_yoshi_egg",
+    "I_hammer",
     "block_tsuta",
     "teresa",
     "jump_step",
