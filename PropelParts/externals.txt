@@ -1,3 +1,7 @@
+execute__12daNetEnemy_cFv__shouldFlip_checkFail=0x80044a60
+load__13dNandThread_cFv__magic_check_success=0x800cf8cc
+executeState_Move__21daLiftRemoconSeesaw_cFv__isValidPlayer_checkFail=0x908441b8
+
 vf58__12dPlayerMdl_cFv=0x800d4150
 setCurrentModel__12dPlayerMdl_cFQ212dPlayerMdl_c7MODEL_e=0x800d4750
 
@@ -129,13 +133,9 @@ returnFrom_CancelAddDropFix=0x807A0D44
 DWORD_8093CDF0=0x8093CDF0
 WMPlayer_loadSubplayers=0x80902BD0
 
-dontFlipNetEnemy=0x80044a60
-
 CrsinLoadFiles=0x8091ec50
 
 mainLevelSetup__10dScStage_cFv=0x80925e70
-
-useWiimoteTilt=0x908441b8
 
 remoWireGetTilt=0x808c4840
 getRemoTiltValue=0x800b3980

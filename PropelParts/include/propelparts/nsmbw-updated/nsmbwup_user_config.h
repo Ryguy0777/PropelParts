@@ -42,3 +42,14 @@
 // file containing that particular bugfix, to indicate that it should be
 // compiled separately for different versions (once for E2, and once for
 // everything else).
+
+#include <propelparts/game_config.h>
+
+// Remove the NSMBW Updated fixes that change some levels
+#ifdef NO_INTRUSIVE_NSMBWUP_FIXES
+
+#define NSMBWUP_C00002_OFF
+
+#define NSMBWUP_C00003_OFF
+
+#endif
