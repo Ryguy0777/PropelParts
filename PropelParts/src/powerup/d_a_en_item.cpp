@@ -97,8 +97,8 @@ static asm void setHammerToEnItemDCA() {
 
 kmWritePointer(0x80AF117C, &setHammerToEnItemDCA);
 
-static asm void setHammerToEnItemDCASpecial() {
-	cmplwi r4, 0x19
+kmBranchDefAsm(0x80A2C0B4, NULL) {
+    cmplwi r4, 0x19
 	bne _not19
 	li r0, 0xD
 	sth r0, 0xDCA(r3)
@@ -109,8 +109,6 @@ static asm void setHammerToEnItemDCASpecial() {
 	sth r0, 0xDCA(r3)
 	blr
 }
-
-kmWritePointer(0x80A2C0B4, &setHammerToEnItemDCASpecial);
 
 // Load the "wait" animation for custom powerups
 kmCallDefAsm(0x80A27CE4) {

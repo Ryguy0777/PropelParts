@@ -126,6 +126,47 @@
     <checkbox nybble="7.3" title="Loads at Midway" comment="When enabled, the Snake Block will only appear if the level has been loaded from a Midway point."/>
   </sprite> <!-- #166: Snake Block -->
 
+  <sprite id="175" name="Flying ? Block" notes="" noyoshi="True" files="block_pata.arc">
+    <list nybble="9.3-9.4" title="Color">
+      <entry value="0">Overworld (Yellow)</entry>
+      <entry value="1">Underground (Blue)</entry>
+      <entry value="2">Snow (Gray)</entry>
+      <entry value="3">Lava (Red)</entry>
+    </list>
+    <list nybble="11.3-11.4" title="Movement">
+      <entry value="0">Moves Right</entry>
+      <entry value="1">Moves Left and Right</entry>
+      <entry value="2">Moves Up and Down</entry>
+    </list>
+    <checkbox nybble="10.4" title="Reverse Direction"/>
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="12" title="Contains" comment="Unlisted values are Empty." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="11">1-Up</entry>
+    </list>
+    <list nybble="12" title="Contains" comment="Unlisted values are Empty." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="11">1-Up</entry>
+    </list>
+    <checkbox nybble="5.4" title="Does Not Despawn" comment="When enabled, the hit block will not despawn when off-screen. Used in retail 06-05 A2."/>
+  </sprite> <!-- #175: Flying ? Block -->
+
   <sprite id="191" name="Tile God Event" notes="The Tile God can Create / Change / Destroy tiles within a specified area when an Event is activated.">
     <dependency notes="The Tile God sprite can be placed no more than one block outside of the Zone it is being activated in for it to function."/>
     <value nybble="3-4" title="Triggering Event ID" comment="When this Event ID is activated, the tiles affected by the Tile God&apos;s area will be created or destroyed, depending on the Mode." idtype="Triggering Event"/>
@@ -169,6 +210,260 @@
     <value nybble="7" title="Tileset Column" comment="When using [Block Type: Tile from Pa(x)], you can spawn every tile from the tileset by selecting it from a grid formation. Each tileset contains 16 Rows (0-15), and 16 Columns (0-15). The first tile in the top left is 0,0 and the last tile in the bottom right is 15,15." comment2="Some common examples for Pa0: &lt;br&gt; &lt;i&gt;Coin: 1,14 | Coin Outline: 1,15 | ?-Block: 3,1 | Used Block: 3,2 | Wooden Block: 3,3 | Stone Block: 3,4 | Donut Lift: 3,5 | Steel Block: 3,6" requirednybble="9" requiredval="8-11"/><!-- Appears only if Block Type (Tile) = 8-11 -->
   </sprite><!-- #191: Tile God Event -->
 
+<sprite id="207" name="? Block" notes="Your most basic, most flexible, standard Question Block. When spawning power-ups, it will spawn enough for every player! Such a generous block~">
+    <dependency notes="If pairing the ?-Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
+      <suggested sprite="159"/>
+      <suggested sprite="260"/>
+      <suggested sprite="474"/>
+      <suggested sprite="172"/>
+      <suggested sprite="382"/>
+    </dependency>
+    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown. Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+      <entry value="0">None / [159] Path Controlled</entry>
+      <entry value="1">[260] Two-Way Line</entry>
+      <entry value="4">[474] Dancing</entry>
+      <entry value="7">[474] Dancing (Reversed)</entry>
+      <entry value="5">[172] Mushroom with Bolt Main</entry>
+      <entry value="6">[382] Mushroom with Bolt Pair</entry>
+    </list>
+    <value nybble="5-6" title="Path Movement ID" comment="If pairing the ?-Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requirednybble="7" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
+    <value nybble="5-6" title="Two Way Line ID" comment="If pairing the ?-Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requirednybble="7" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
+    <value nybble="5-6" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value nybble="5-6" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value nybble="5-6" title="Mushroom ID" comment="If pairing the ?-Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requirednybble="7" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
+    <value nybble="5-6" title="Mushroom ID" comment="If pairing the ?-Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requirednybble="7" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."/>
+    <checkbox nybble="10.4" title="Follows Lines" comment="It is recommended to use [402] Line Controlled ? Block instead."/>
+    <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the ?-Block will move based on the Line that it is connected to."/>
+  </sprite> <!-- #207: ? Block -->
+
+  <sprite id="208" name="(Unused) ? Block" notes="This is a nearly identical version of [207] to the point that you should probably just be using [207]...">
+    <dependency notes="If pairing the ?-Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
+      <suggested sprite="159"/>
+      <suggested sprite="260"/>
+      <suggested sprite="474"/>
+      <suggested sprite="172"/>
+      <suggested sprite="382"/>
+    </dependency>
+    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+      <entry value="0">None / [159] Path Controlled</entry>
+      <entry value="1">[260] Two-Way Line</entry>
+      <entry value="4">[474] Dancing</entry>
+      <entry value="7">[474] Dancing (Reversed)</entry>
+      <entry value="5">[172] Mushroom with Bolt Main</entry>
+      <entry value="6">[382] Mushroom with Bolt Pair</entry>
+    </list>
+    <value nybble="5-6" title="Path Movement ID" comment="If pairing the ?-Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requirednybble="7" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
+    <value nybble="5-6" title="Two Way Line ID" comment="If pairing the ?-Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requirednybble="7" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
+    <value nybble="5-6" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value nybble="5-6" title="Set to Zero" comment="If pairing the ?-Block with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value nybble="5-6" title="Mushroom ID" comment="If pairing the ?-Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requirednybble="7" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
+    <value nybble="5-6" title="Mushroom ID" comment="If pairing the ?-Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requirednybble="7" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the ?-Block placing it further behind other sprites." comment2="This will place the ?-Block behind even Chainlink Fence and Layer 1 terrain."  advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
+  </sprite> <!-- #208: (Unused) ? Block -->
+
+  <sprite id="209" name="Brick Block" notes="Your most basic, most flexible, standard brown Brick Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a stingy block~" files="I_ship_key.arc">
+    <dependency notes="If pairing the Brick Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
+      <suggested sprite="159"/>
+      <suggested sprite="260"/>
+      <suggested sprite="474"/>
+      <suggested sprite="172"/>
+      <suggested sprite="382"/>
+    </dependency>
+    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+      <entry value="0">None / [159] Path Controlled</entry>
+      <entry value="1">[260] Two-Way Line</entry>
+      <entry value="4">[474] Dancing</entry>
+      <entry value="7">[474] Dancing (Reversed)</entry>
+      <entry value="5">[172] Mushroom with Bolt Main</entry>
+      <entry value="6">[382] Mushroom with Bolt Pair</entry>
+    </list>
+    <value nybble="5-6" title="Path Movement ID" comment="If pairing the Brick Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requirednybble="7" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
+    <value nybble="5-6" title="Two Way Line ID" comment="If pairing the Brick Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requirednybble="7" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
+    <value nybble="5-6" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value nybble="5-6" title="Set to Zero" comment="If pairing the Brick Block with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value nybble="5-6" title="Mushroom ID" comment="If pairing the Brick Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requirednybble="7" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
+    <value nybble="5-6" title="Mushroom ID" comment="If pairing the Brick Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requirednybble="7" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Brick Block placing it further behind other sprites." comment2="This will place the Brick Block behind even Chainlink Fence and Layer 1 terrain."  advanced="True" advancedcomment="When this is checked, enemies will &lt;b&gt;fall through the block&lt;/b&gt; from all sides, even from above. This is also the case for the block's final form (Used Block). The player cannot pass through the block." />
+    <checkbox nybble="10.4" title="Follows Lines" comment="It is recommended to use [403] Line Controlled Brick Block instead."/>
+    <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Brick Block will move based on the Line that it is connected to."/>
+  </sprite> <!-- #209: Brick Block -->
+
+  <sprite id="221" name="Invisible Block" notes="Your most sneaky, most annoying, hidden transparent Invisible Block. When spawning power-ups, it will spawn only one, no matter how many players! Such a rude block~" advancednotes="The tileset-based Invisible Blocks can be destroyed by sprites like Bob-ombs. Sprite-based Invisible Blocks however cannot be destroyed.">
+    <dependency notes="If pairing the Invisible Block for movement or other features, you'll likely need one of the sprites listed in the Dependency List.">
+      <suggested sprite="159"/>
+      <suggested sprite="260"/>
+      <suggested sprite="474"/>
+      <suggested sprite="172"/>
+      <suggested sprite="382"/>
+    </dependency>
+    <list nybble="7" title="Movement Type" comment="This determines which type of movement the Block will be assigned." comment2="Movement Types 2, and 9+ are unused or otherwise unknown.&lt;br&gt;Movement Type 3 and Type 8 only function with Coins. If you want to experiment with unknown Types, you'll need to modify the Raw Data.">
+      <entry value="0">None / [159] Path Controlled</entry>
+      <entry value="1">[260] Two-Way Line</entry>
+      <entry value="4">[474] Dancing</entry>
+      <entry value="7">[474] Dancing (Reversed)</entry>
+      <entry value="5">[172] Mushroom with Bolt Main</entry>
+      <entry value="6">[382] Mushroom with Bolt Pair</entry>
+    </list>
+    <value nybble="5-6" title="Path Movement ID" comment="If pairing the Invisible Block with Sprite 159, match the Path Movement ID to enable Path controlled movement." requirednybble="7" requiredval="0" idtype="Path Movement"/> <!-- Appears if [Movement Type] = 0 -->
+    <value nybble="5-6" title="Two Way Line ID" comment="If pairing the Invisible Block with sprite 260, match the Two Way Line ID to enable Two Way synchronized movement." requirednybble="7" requiredval="1" idtype="Two Way Line"/> <!-- Appears if [Movement Type] = 1 -->
+    <value nybble="5-6" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="4"/> <!-- Appears if [Movement Type] = 4 -->
+    <value nybble="5-6" title="Set to Zero" comment="If pairing the Invisible Block with sprite 474, no further action is needed to create Dancing synchronized movement." requirednybble="7" requiredval="7"/> <!-- Appears if [Movement Type] = 7 -->
+    <value nybble="5-6" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 172, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform with the Bolt." requirednybble="7" requiredval="5" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 5 -->
+    <value nybble="5-6" title="Mushroom ID" comment="If pairing the Invisible Block with sprite 382, match the Mushroom ID to enable Mushroom Bolt controlled movement. It will be paired to the platform without the Bolt." requirednybble="7" requiredval="6" idtype="Mushroom"/> <!-- Appears if [Movement Type] = 6 -->
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <checkbox nybble="8.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Invisible Block placing it further behind other sprites." comment2="This will place the Invisible Block behind even Chainlink Fence and Layer 1 terrain."/>
+    <checkbox nybble="10.4" title="Follows Lines"/>
+    <dualbox nybble="9.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the Invisible Block will move based on the Line that it is connected to."/>
+  </sprite> <!-- #221: Invisible Block -->
+
   <sprite id="253" name="Rotation Controlled Coin" notes="A standard coin that can be paired with rotation controllers. It does not have any additional features like [147] Coin.">
     <dependency notes="This coin does not function and cannot be collected unless actually paired to a rotation controller.">
       <suggested sprite="96"/>
@@ -196,6 +491,134 @@
     </list>
     <value nybble="11-12" title="Rotation ID" comment="This pairs the Coin to a matching rotation controller." idtype="Rotation"/>
   </sprite> <!-- #253: Rotation Controlled Coin -->
+
+  <sprite id="255" name="Rotation Controlled ? Block" notes="A ?-Block that can either be moved by rotation controllers or manually angled.">
+    <dependency notes="A rotation controller is not required for this sprite to function. You can, instead, set a manual angle for the block.">
+      <suggested sprite="96"/>
+      <suggested sprite="149"/>
+    </dependency>
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the ?-Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
+    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled.">
+      <entry value="0">0°</entry>
+      <entry value="1">3°</entry>
+      <entry value="2">6°</entry>
+      <entry value="3">9°</entry>
+      <entry value="4">12°</entry>
+      <entry value="5">15°</entry>
+      <entry value="6">18°</entry>
+      <entry value="7">21°</entry>
+      <entry value="8">24°</entry>
+      <entry value="9">27°</entry>
+      <entry value="10">30°</entry>
+      <entry value="11">33°</entry>
+      <entry value="12">36°</entry>
+      <entry value="13">39°</entry>
+      <entry value="14">42°</entry>
+      <entry value="15">45°</entry>
+    </list>
+    <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+  </sprite> <!-- #255: Rotation Controlled ? Block -->
+
+  <sprite id="256" name="Rotation Controlled Brick Block" notes="A Brick Block that can either be moved by rotation controllers or manually angled.">
+    <dependency notes="A rotation controller is not required for this sprite to function. You can, instead, set a manual angle for the block.">
+      <suggested sprite="96"/>
+      <suggested sprite="149"/>
+    </dependency>
+    <value nybble="11-12" title="Rotation ID" comment="This pairs the Brick Block to a matching rotation controller." requirednybble="9" requiredval="0" idtype="Rotation"/>
+    <list nybble="9" title="Tilt Angle" comment="This determines the angle the block will be tilted. Tilted blocks can not be rotation controlled.">
+      <entry value="0">0°</entry>
+      <entry value="1">3°</entry>
+      <entry value="2">6°</entry>
+      <entry value="3">9°</entry>
+      <entry value="4">12°</entry>
+      <entry value="5">15°</entry>
+      <entry value="6">18°</entry>
+      <entry value="7">21°</entry>
+      <entry value="8">24°</entry>
+      <entry value="9">27°</entry>
+      <entry value="10">30°</entry>
+      <entry value="11">33°</entry>
+      <entry value="12">36°</entry>
+      <entry value="13">39°</entry>
+      <entry value="14">42°</entry>
+      <entry value="15">45°</entry>
+    </list>
+    <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+  </sprite> <!-- #256: Rotation Controlled Brick Block -->
 
   <sprite id="273" name="Jumbo Ray Respawner 2" notes="A controller that will respawn or otherwise spawn additional Jumbo Rays.">
     <value nybble="12" title="Ray ID" comment="This determines which Jumbo Rays will be respawned by this controller." idtype="Ray"/>
@@ -244,6 +667,162 @@
     </list>
     <checkbox nybble="11.4" title="Place Behind Other Sprites" comment="When enabled, this changes the relative Z-Order of the Signboard placing it further behind other sprites."/>
   </sprite> <!-- #310: Signboard - Arrow -->
+
+  <sprite id="402" name="Line Controlled ? Block" notes="A variant of the ? Block that will ride along Line objects.">
+    <dependency notes="Use the Group Controller [236] for spawn synchronization with other Group controlled sprites.">
+      <suggested sprite="236"/>
+    </dependency>
+    <value nybble="5-6" title="Group ID" comment="This pairs the block to a matching Group Controller for spawn synchronization with other Group controlled sprites." idtype="Group"/>
+    <list nybble="7" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
+      <entry value="4">Very Slow</entry>
+      <entry value="5">Slow</entry>
+      <entry value="6">Slow+</entry>
+      <entry value="0">Medium</entry>
+      <entry value="1">Medium+</entry>
+      <entry value="2">Fast</entry>
+      <entry value="7">Faster</entry>
+      <entry value="3">Very Fast</entry>
+    </list>
+    <dualbox nybble="12.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the block will move based on the Line that it is connected to."/>
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+  </sprite> <!-- #402: Line Controlled ? Block -->
+
+  <sprite id="403" name="Line Controlled Brick Block" notes="A variant of the Brick Block that will ride along Line objects.">
+    <dependency notes="Use the Group Controller [236] for spawn synchronization with other Group controlled sprites.">
+      <suggested sprite="236"/>
+    </dependency>
+    <value nybble="5-6" title="Group ID" comment="This pairs the block to a matching Group Controller for spawn synchronization with other Group controlled sprites." idtype="Group"/>
+    <list nybble="7" title="Speed" comment="Line Controlled sprites use the same speed setting across all of them.">
+      <entry value="4">Very Slow</entry>
+      <entry value="5">Slow</entry>
+      <entry value="6">Slow+</entry>
+      <entry value="0">Medium</entry>
+      <entry value="1">Medium+</entry>
+      <entry value="2">Fast</entry>
+      <entry value="7">Faster</entry>
+      <entry value="3">Very Fast</entry>
+    </list>
+    <dualbox nybble="12.4" title1="Start Right/Up" title2="Start Left/Down" comment="This determines which direction the block will move based on the Line that it is connected to."/>
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+  </sprite> <!-- #403: Line Controlled Brick Block -->
+
+  <sprite id="433" name="Floating ? Block" notes="A slightly-larger-than-normal ? Block that floats on the surface of the Zone's non-Location Water, Raft Water, Poisoned Water, or Lava.">
+    <dependency notes="Place this block at the horizontal position you want it to load, and it will spawn floating at the surface line of the body of liquid. It only works with the non-Location liquid sprites listed below.">
+      <suggested sprite="138"/>
+      <suggested sprite="139"/>
+      <suggested sprite="216"/>
+      <suggested sprite="373"/>
+    </dependency>
+    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Fire Flower</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+    <list nybble="12" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+      <entry value="0">Empty</entry>
+      <entry value="1">1 Coin</entry>
+      <entry value="10">10-Coin</entry>
+      <entry value="14">Mushroom (if small)</entry>
+      <entry value="2">Hammer Suit</entry>
+      <entry value="3">Fire Flower</entry>
+      <entry value="15">Ice Flower</entry>
+      <entry value="4">Propeller Shroom</entry>
+      <entry value="5">Penguin Suit</entry>
+      <entry value="6">Mini Mushroom</entry>
+      <entry value="7">Star</entry>
+      <entry value="8">Continuous Star</entry>
+      <entry value="9">Yoshi Egg</entry>
+      <entry value="11">1-Up</entry>
+      <entry value="12">Vine</entry>
+      <entry value="13">Spring</entry>
+    </list>
+  </sprite> <!-- #433: Floating ? Block -->
   
   <sprite id="483" name="Actor Spawner" notes="Spawns an actor on event trigger.">
     <value nybble="1.1-2.2" title="Triggering Event ID" comment="Triggered by event number value+1."/>
