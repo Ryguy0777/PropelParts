@@ -565,6 +565,20 @@ class SpriteImage_SwitchPalace(SLib.SpriteImage_StaticMultiple):  # 529
         super().dataChanged()
 
 
+class SpriteImage_WaterSpiny(SLib.SpriteImage_Static):  # 530
+    def __init__(self, parent, scale=1.5):
+        super().__init__(
+            parent,
+            scale,
+            ImageCache['WaterSpiny'],
+            (-1.75, -1.75)
+        )
+
+    @staticmethod
+    def loadImages():
+        SLib.loadIfNotInImageCache('WaterSpiny', 'water_spiny.png')
+
+
 ImageClasses = {
     22: SpriteImage_MiniGoomba,
     42: SpriteImage_ColorExcSwitch,
@@ -592,4 +606,5 @@ ImageClasses = {
     510: SpriteImage_StarCoinFake,
     528: SpriteImage_SwitchBlock,
     529: SpriteImage_SwitchPalace,
+    530: SpriteImage_WaterSpiny,
 }
