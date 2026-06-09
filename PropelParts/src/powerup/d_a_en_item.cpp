@@ -22,7 +22,6 @@ kmWritePointer(0x80AF1000, "I_hammer");
 // 2 = player was given powerup (failed)
 // 3 = player was given powerup (success)
 int PowerupCheck_Custom(int enItem_power, int player_power, dAcPy_c *player) {
-    OSReport("%d %d\n", enItem_power, player_power);
     if (enItem_power == 5) { // Hammer suit
         if (player_power == POWERUP_HAMMER_SUIT) {
             // Player already has hammer suit
@@ -39,6 +38,7 @@ int PowerupCheck_Custom(int enItem_power, int player_power, dAcPy_c *player) {
 
 extern "C" void PowerupCheck_Custom__FiiP7dAcPy_c(void);
 
+// No need to adjust this, all the logic is handled in the function above
 kmCallDefAsm(0x80A285FC) {
     stwu sp, -0x10(sp)
 	mflr r0
@@ -77,17 +77,42 @@ kmCallDefAsm(0x80A285FC) {
 }
 
 // Allow EN_ITEM to be a custom powerup
+
+/*
+    EN_ITEM ID VALUES
+    0x0 = Mushroom
+    0x1 = Fire Flower
+    0x2 = Star
+    0x3 = Coin
+    0x4 = Ice Flower
+    0x6 = 1-UP
+    0xB = Propeller
+    0xD = Mini Mushroom
+    0xE = Penguin
+    0xF = Mega Mushroom (unused, does nothing, loads model from I_big_kinoko)
+    0x10 = Big Coin (unused, adds 10 coins to coin counter)
+
+    NEW ITEMS
+    0x5 = Hammer Suit
+*/
+
 extern "C" void daEnItem_c__GetWhetherPlayerCanGetPowerupOrNot(void);
 
+// Sadly, since we're patching a switch statement table, there's no easy way to make this patch in C++
+// To make your own function:
+// 1. Copy the below function, along with the kamek hook (change the function name, of course)
+// 2. Change the line containing li r0, 5 to contain your powerup's DCA value
+// (This is basically the powerup actor's item id value, it tells the powerup actor what powerup it is)
+// 3. Change the address your function gets inserted to, use ghidra/ida/dolphin to find it
 static asm void setHammerToEnItemDCA() {
     bl daEnItem_c__GetWhetherPlayerCanGetPowerupOrNot
 	cmpwi r3, 1
-	bne DontSetHammer
+	bne DontSetPowerup
 	
 	li r0, 5
 	sth r0, 0xDCA(r31)
 	
-    DontSetHammer:
+    DontSetPowerup:
 	lwz r0, 0x14(sp)
 	lwz r31, 0xC(sp)
 	mtlr r0
@@ -97,13 +122,14 @@ static asm void setHammerToEnItemDCA() {
 
 kmWritePointer(0x80AF117C, &setHammerToEnItemDCA);
 
+// Same as above, I could turn this into a wrapper for a C++ function but I'm too lazy to deal with register safety
 kmBranchDefAsm(0x80A2C0B4, NULL) {
-    cmplwi r4, 0x19
-	bne _not19
+    cmplwi r4, 0x19 // Mini
+	bne notMiniMush
 	li r0, 0xD
 	sth r0, 0xDCA(r3)
-    _not19:
-	cmplwi r4, 6
+    notMiniMush:
+	cmplwi r4, 6 // Hammer
 	bnelr
 	li r0, 5
 	sth r0, 0xDCA(r3)
