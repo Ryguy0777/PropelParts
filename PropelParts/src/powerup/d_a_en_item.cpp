@@ -146,3 +146,56 @@ kmCallDefAsm(0x80A27CE4) {
 	crclr 4*cr0+eq
 	blr
 }
+
+// Custom movement types for custom items
+extern "C" void daEnItem_c__doWaitMove1(void);
+kmBranchDefAsm(0x80a28b34, 0x80a28b3c) {
+    cmplwi r0, 2 // Star
+    beq isStarOrHammer
+    cmplwi r0, 5 // Hammer
+    beq isStarOrHammer
+
+    b daEnItem_c__doWaitMove1
+
+    isStarOrHammer:
+    blr
+}
+
+extern "C" void daEnItem_c__doWaitMove2(void);
+kmBranchDefAsm(0x80a28a58, 0x80a28a60) {
+    cmplwi r0, 2 // Star
+    beq isStarOrHammer
+    cmplwi r0, 5 // Hammer
+    beq isStarOrHammer
+
+    b daEnItem_c__doWaitMove2
+
+    isStarOrHammer:
+    blr
+}
+
+extern "C" void daEnItem_c__doPropellerMove(void);
+kmBranchDefAsm(0x80a27aa4, 0x80a27aac) {
+    cmplwi r0, 2 // Star
+    beq isStarOrHammer
+    cmplwi r0, 5 // Hammer
+    beq isStarOrHammer
+
+    b daEnItem_c__doPropellerMove
+
+    isStarOrHammer:
+    blr
+}
+
+// Only play star sounds in StarMove if the current actor is a star
+extern "C" void startSound__14SndObjctCmnMapFUlRCQ34nw4r4math4VEC2Ul(void);
+kmBranchDefAsm(0x80a2a3ac, 0x80a2a3b0) {
+    lhz r12, 0xdca(r31)
+    cmplwi r12, 2
+    bne dontPlayStarSound
+
+    bl startSound__14SndObjctCmnMapFUlRCQ34nw4r4math4VEC2Ul
+
+    dontPlayStarSound:
+    blr
+}

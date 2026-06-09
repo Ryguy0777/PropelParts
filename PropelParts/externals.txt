@@ -1,3 +1,7 @@
+daEnItem_c__doPropellerMove=0x80a27ac8
+daEnItem_c__doWaitMove2=0x80a28a7c
+daEnItem_c__doWaitMove1=0x80a28b58
+
 daEnItem_c__GetWhetherPlayerCanGetPowerupOrNot=0x80A2BE60
 
 fn_80145c00__7dAcPy_cF16PLAYER_POWERUP_e=0x80145c00
