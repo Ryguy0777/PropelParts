@@ -10,7 +10,7 @@ kmBranchDefCpp(0x807B2030, NULL, dStockItemShadow_c *) {
 
 // dStockItemShadow_c::createLayout()
 kmBranchDefCpp(0x807B21B0, NULL, bool, dStockItemShadow_c *this_) {
-    if (!this_->mLayout.ReadResource("stockItemShadow/stockItemShadow.arc", false)) {
+    if (!this_->mLayout.ReadResource("stockItemShadow_powerup/stockItemShadow.arc", false)) {
         return false;
     }
 

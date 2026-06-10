@@ -99,7 +99,7 @@ kmBranchDefCpp(0x807AF730, NULL, int, dStockItem_c *this_) {
 
 // dStockItem_c::createLayout()
 kmBranchDefCpp(0x807AF8D0, NULL, bool, dStockItem_c *this_) {
-    if (!this_->mLayout.ReadResource("stockItem/stockItem.arc", false)) {
+    if (!this_->mLayout.ReadResource("stockItem_powerup/stockItem.arc", false)) {
         return false;
     }
 
