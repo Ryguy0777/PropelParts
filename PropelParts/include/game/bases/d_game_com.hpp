@@ -98,6 +98,7 @@ namespace dGameCom {
     bool PlayerEnterCheck(int);
     void Player1upColor(LytTextBox_c *, int);
     void getGlbPosToLyt(mVec3_c &);
+    void calcLyt3DPos(mVec3_c &, mVec3_c &); ///< @unofficial
     bool someCheck(mVec3_c *a, sRangeDataF *b); ///< @unofficial
 
     bool checkRectangleOverlap(mVec3_c *, mVec3_c *, mVec3_c *, mVec3_c *, float); ///< @unofficial

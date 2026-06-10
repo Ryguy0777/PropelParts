@@ -1,3 +1,24 @@
+__ct__12dStockItem_cFv = 0x807AF3A0
+createLayout__12dStockItem_cFv = 0x807AF8D0
+getPlyPosPane__12dStockItem_cFi = 0x807AFB90
+setItem__12dStockItem_cFv = 0x807B00A0
+createButtonEffect__12dStockItem_cFv = 0x807B0470
+createPlyItemEffect__12dStockItem_cFiP7mVec3_ci = 0x807B0360
+setShadowInfo__12dStockItem_cFii = 0x807B0340
+StateID_ButtonChangeAnimeEndWait__12dStockItem_c = 0x80995868
+StateID_ItemSelectWait__12dStockItem_c = 0x809958A8
+checkValidStockItem__FiiPb = 0x800FC960
+
+__ct__18dStockItemShadow_cFv = 0x807B2060
+
+calcLyt3DPos__8dGameComFR7mVec3_cR7mVec3_c = 0x800B32E0
+
+calcMdl__10daWmItem_cFv = 0x808D4F40
+
+setPlayerMode__12da2DPlayer_cFi = 0x808C6DF0
+
+openWindow__11SndSceneMgrFi = 0x8019CB40
+
 daEnItem_c__doPropellerMove=0x80a27ac8
 daEnItem_c__doWaitMove2=0x80a28a7c
 daEnItem_c__doWaitMove1=0x80a28b58

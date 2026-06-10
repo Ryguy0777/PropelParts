@@ -47,6 +47,9 @@ public:
 
     dInfo_c();
 
+    u8 getStockItem(int) const;
+    void subStockItem(int);
+
     void GetMapEnemyInfo(int, int, enemy_s &);
     void SetMapEnemyInfo(int, int, int, int);
     void FUN_800bbc40(int, int, int);
@@ -88,7 +91,8 @@ public:
     int mCourseSelectIndexInPage;
     u8 pad10[0x708];
     int mChukanPointNum;
-    u8 pad11[6];
+    int mPrevStockItem;
+    u8 pad11[2];
     bool mFukidashiActionPerformed[4][0x16];
     u32 pad12;
 

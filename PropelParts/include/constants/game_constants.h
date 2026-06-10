@@ -97,6 +97,20 @@ enum PLAYER_POWERUP_e {
     NEW_POWERUP_COUNT
 };
 
+/// @brief The identifiers for each inventory item.
+enum STOCK_ITEM_e {
+    ITEM_MUSHROOM,
+    ITEM_FIRE_FLOWER,
+    ITEM_PROPELLER_SHROOM,
+    ITEM_ICE_FLOWER,
+    ITEM_PENGUIN_SUIT,
+    ITEM_MINI_MUSHROOM,
+    ITEM_STAR_POWER,
+    ITEM_COUNT,
+    ITEM_HAMMER_SUIT = ITEM_COUNT,
+    NEW_ITEM_COUNT
+};
+
 /// @brief The numbers corresponding to each level type.
 enum STAGE_e {
     STAGE_1,

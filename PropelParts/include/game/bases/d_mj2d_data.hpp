@@ -232,6 +232,8 @@ public:
     u8 getIbaraNow() const; ///< Gets the worldmap vine reshuffle counter.
 
     inline int getCurrentWorld() {return mCurrentWorld;};
+    inline int getNewStockItem(int item) {return mNewStockItemCount[item];};
+    inline void setNewStockItem(int item, int amt) {mNewStockItemCount[item] = amt;};
 
 private:
     /// @brief Checks that the save data version matches the current one and clears the slot if not.
@@ -295,10 +297,18 @@ private:
     u8 mDeathCount[WORLD_COUNT][STAGE_COUNT];
     u8 mDeathCountSwitch; ///< The death count for the worldmap switch variant of World 3-4. See ::mDeathCount.
 
-    u8 pad[0x13]; // [Aligns the data to 32]
+    union {
+        u8 pad[0x13]; // [Aligns the data to 32]
+        struct {
+            /// @brief The default character for each player.
+            /// @unofficial
+            u8 mNewStockItemCount[NEW_ITEM_COUNT];
+        };
+        
+    };
     u32 mChecksum; ///< The CRC32 checksum of the above data.
 
-    /// @brief The default character for each player.
+    /// @brief The inventory amount for each item.
     /// @unofficial
     static const u32 sDefaultCharacters[4];
 

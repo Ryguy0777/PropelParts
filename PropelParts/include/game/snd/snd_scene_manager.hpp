@@ -8,6 +8,9 @@ public:
     void fn_8019be60(int); ///< @unofficial
     void fn_8019bd90(int); ///< @unofficial
 
+    void openWindow(int); ///< @unofficial
+    void closeWindow();
+
     void enterHBM();
     void exitHBM();
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <game/bases/d_wm_demo_actor.hpp>
+#include <game/bases/d_wm_enemy.hpp>
 
 class daWmPlayer_c : public dWmDemoActor_c {
 public:
@@ -8,6 +9,8 @@ public:
 
     static bool checkWalkPlayers();
     static bool isPlayerStarMode();
+
+    static void startStarSound();
 
     u8 mPad1[0x8];
     bool m_18c;

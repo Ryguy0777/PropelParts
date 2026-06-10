@@ -136,20 +136,6 @@ daWmSwitchExt_c *WmSwitchConstruct(int pointIdx, const char *pNodeName, const mV
     return (daWmSwitchExt_c*)dBaseActor_c::construct(fProfile::WM_SWITCH, (switchType << 20) | (flagType << 16) | (pointIdx << 8) | 0xFF, pos, nullptr);
 }
 
-// Load WM_SWITCH in every world
-// TODO: Once WorldMap branch is merged, move this into the global reslist
-kmBranchDefCpp(0x80926D80, NULL, bool, bool ret) {
-    dResMng_c::m_instance->setRes("WorldMap", "cobHatenaSwitch", nullptr);
-    return ret;
-}
-
-// Delete the switch when unloading the map
-// TODO: Same as above
-kmBranchDefCpp(0x80927AB4, NULL, bool, bool ret) {
-    dResMng_c::m_instance->getResP()->deleteRes("cobHatenaSwitch");
-    return ret;
-}
-
 // (daWmPlayer_c) Toggle flag when a switch is hit
 kmBranchDefCpp(0x809072A0, NULL, bool, void *, int pointIdx) {
     daWmSwitchExt_c *pSwitch = (daWmSwitchExt_c*)dWmLib::SearchMapObjFromCsvIndex(fProfile::WM_SWITCH, pointIdx);
