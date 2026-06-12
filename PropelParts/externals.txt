@@ -1,3 +1,5 @@
+item_set__15daEnBlockMain_cFPQ215daEnBlockMain_c16BlockSpawnInfo_si=0x80022810
+
 __ct__12dStockItem_cFv = 0x807AF3A0
 createLayout__12dStockItem_cFv = 0x807AF8D0
 getPlyPosPane__12dStockItem_cFi = 0x807AFB90

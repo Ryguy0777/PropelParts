@@ -84,6 +84,8 @@ int daEnBlockRotate_c::create() {
 
     mBg.entry();
 
+    mPos.z = 500.0f;
+
     // Sprite settings
     mContents = mParam & 0xF;
     mIndestructible = mParam >> 4 & 1;
@@ -257,36 +259,14 @@ bool daEnBlockRotate_c::playerOverlaps() {
 }
 
 void daEnBlockRotate_c::createItem() {
-    // Spawn block contents
-    mVec3_c coinPos(mPos.x, mPos.y, mPos.z);
-    nw4r::math::VEC2 soundPos = dAudio::cvtSndObjctPos(coinPos);
-    switch (mContents) {
-        case 9: // Yoshi egg
-            if (YoshiEggCreateCheck(0))
-                return;
-            break;
-        case 12: // Vine
-            item_ivy_set(1, m_169);
-            break;
-        case 13: // Spring
-            jumpdai_set();
-            break;
-        case 16: // Successful 10 coin chain
-            if (!mIsGroundPound) {
-                coinPos.y += 16.0f;
-                dActorMng_c::m_instance->createJumpCoin(coinPos, 5, 0);
-                dAudio::g_pSndObjMap->startSound(SE_OBJ_GET_COIN_SHOWER, soundPos, 0);
-            } else {
-                coinPos.y -= 8.0f;
-                dActorMng_c::m_instance->createBlockDownCoin(coinPos, 5, 0);
-            }
-            break;
-        default: // Normal items
-            dActor_c::construct(fProfile::EN_ITEM, mPlayerID << 16 | (mIsGroundPound * 3) << 18 | l_item_values[mContents] & 0b11111, &mPos, nullptr, mLayer);
-            // Play item spawn sound
-            item_sound_set(mPos, l_item_values[mContents], mPlayerID, 0, 0);
-            break;
-    }
+    BlockSpawnInfo_s spawnInfo;
+    spawnInfo.mBlockPos = mPos;
+    spawnInfo.mPlrNo = mPlayerID;
+    spawnInfo.mItemIdx = mContents;
+    spawnInfo.mIsMultiplayer = false;
+    spawnInfo.mNotGroundPound = 0;
+    spawnInfo.m_16 = 0;
+    item_set(&spawnInfo, 1);
 }
 
 void daEnBlockRotate_c::destroyBlock() {
@@ -310,12 +290,15 @@ bool daEnBlockRotate_c::checkTenCoin() {
             case 1: // Chain is ongoing
             default:
                 mContents = 1;
+                mHasBeenHit = 0;
                 return false;
             case 2: // Chain has ended unsuccessfully
                 mContents = 10;
+                mHasBeenHit = 0;
                 return true;
             case 3: // Chain has ended successfully
                 mContents = 16;
+                mHasBeenHit = 0;
                 return true;
         }
     } else if (mContents != 0) {
