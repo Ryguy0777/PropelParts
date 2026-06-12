@@ -517,8 +517,8 @@
       <entry value="15">45°</entry>
     </list>
     <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
-    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
-    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+    <checkbox nybble="7.4" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="7.4" requiredval="0">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
       <entry value="10">10-Coin</entry>
@@ -536,7 +536,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="7.4" requiredval="1">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
       <entry value="10">10-Coin</entry>
@@ -581,8 +581,8 @@
       <entry value="15">45°</entry>
     </list>
     <dualbox nybble="8.4" title1="Tilts Right" title2="Tilts Left"/>
-    <checkbox nybble="11.1" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
-    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="0">
+    <checkbox nybble="7.4" title="Use Alternate Item Table" comment="When enabled, the block will use the secondary item table instead of the original."/>
+    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="7.4" requiredval="0">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
       <entry value="10">10-Coin</entry>
@@ -600,7 +600,7 @@
       <entry value="12">Vine</entry>
       <entry value="13">Spring</entry>
     </list>
-    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="11.1" requiredval="1">
+    <list nybble="10" title="Block Contains" comment="This determines what item the block contains." comment2="This block will release as many items as there are players." requirednybble="7.4" requiredval="1">
       <entry value="0">Empty</entry>
       <entry value="1">1 Coin</entry>
       <entry value="10">10-Coin</entry>

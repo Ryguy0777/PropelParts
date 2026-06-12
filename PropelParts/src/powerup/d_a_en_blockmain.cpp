@@ -20,6 +20,7 @@ kmWriteNop(0x80022b90);
     0x6 = Mushroom (unused?)
     0x7 = 1-UP Mushroom
     0x8 = Mushroom (used by mushroom-if-small)
+    0x9 = Fire Flower (unused)
     0xA = Mushroom (used by vine)
     0xC = Mushroom (used by yoshi egg)
     0xD = Mushroom (used by spring)
@@ -33,7 +34,7 @@ kmWriteNop(0x80022b90);
     NEW ITEMS
     0x6 = Hammer Suit
 
-    All other values will give mushrooms
+    All other values will call the "leaping item in multiplayer" code
 */
 const u32 l_new_item_values[] = {
     0xF,    // Empty
@@ -58,15 +59,29 @@ const u32 l_new_item_values[] = {
 
 // Both of the following patch the daEnBlockMain_c function for spawning items
 // If a block actor doesn't use this (I only think EN_BIG_RENGA_BLOCK and the tile blocks) then they won't spawn a hammer suit
-// There's a second table in use here too and I'm not entirely sure what it's for, if something breaks then that needs patching too
 
 kmBranchDefAsm(0x80022854, 0x80022858) {
+    // We have to use a different bit for the rotation controlled blocks
+    lhz r0, 0x8(r27) // Load the profile name
+    cmpwi r0, 532 // EN_BLOCK_HATENA_ANGLE
+    beq checkAltBit_Angle
+    cmpwi r0, 533 // EN_BLOCK_RENGA_ANGLE
+    beq checkAltBit_Angle
+
     lwz r0, 0x4(r27) // Load mParam into r0
     rlwinm r0, r0, 25, 31, 31 // Get bit 7
     cmpwi r0, 0
     beq useOriginalTable
+    b useAltTable
+
+    checkAltBit_Angle:
+    lwz r0, 0x4(r27) // Load mParam into r0
+    rlwinm r0, r0, 12, 31, 31 // Get bit 20
+    cmpwi r0, 0
+    beq useOriginalTable
 
     // Load our new item table
+    useAltTable:
     lis r3, l_new_item_values@h
     ori r3, r3, l_new_item_values@l
     b ret
@@ -81,12 +96,26 @@ kmBranchDefAsm(0x80022854, 0x80022858) {
 }
 
 kmBranchDefAsm(0x80022b58, 0x80022b5c) {
+    lhz r12, 0x8(r27) // Load the profile name
+    cmpwi r12, 532 // EN_BLOCK_HATENA_ANGLE
+    beq checkAltBit_Angle
+    cmpwi r12, 533 // EN_BLOCK_RENGA_ANGLE
+    beq checkAltBit_Angle
+
     lwz r12, 0x4(r27) // Load mParam into r12
     rlwinm r12, r12, 25, 31, 31 // Get bit 7
     cmpwi r12, 0
     beq useOriginalTable
+    b useAltTable
+
+    checkAltBit_Angle:
+    lwz r12, 0x4(r27) // Load mParam into r12
+    rlwinm r12, r12, 12, 31, 31 // Get bit 20
+    cmpwi r12, 0
+    beq useOriginalTable
 
     // Load our new item table
+    useAltTable:
     lis r5, l_new_item_values@h
     ori r5, r5, l_new_item_values@l
     b ret
