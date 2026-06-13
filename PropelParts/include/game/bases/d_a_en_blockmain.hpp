@@ -4,6 +4,7 @@
 
 class daEnBlockMain_c : public dEn_c {
 public:
+    /// @unofficial
     struct BlockSpawnInfo_s {
         mVec3_c mBlockPos;
         u8 mPlrNo;
